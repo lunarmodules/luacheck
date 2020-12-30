@@ -94,6 +94,10 @@ There are a few plugins which allow using Luacheck directly inside an editor, sh
 
 If you are a plugin developer, see [recommended way of using Luacheck in a plugin](http://luacheck.readthedocs.org/en/stable/cli.html#stable-interface-for-editor-plugins-and-tools).
 
+### Continuous Integration
+
+* [Mega-Linter](https://nvuillam.github.io/mega-linter/) is a CI tool for GitHub Actions and other CI systems, that embeds more than 70 linters, including [luacheck](https://nvuillam.github.io/mega-linter/descriptors/lua_luacheck/). When [installed](https://nvuillam.github.io/mega-linter/installation/), any detected LUA file will be linted by luacheck at each commit or pull request
+
 ### Other projects
 
 * [Luacheck bindings for Node.js](https://www.npmjs.com/package/luacheck);
