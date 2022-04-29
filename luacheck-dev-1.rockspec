@@ -50,6 +50,7 @@ build = {
       ["luacheck.stages.detect_empty_blocks"] = "src/luacheck/stages/detect_empty_blocks.lua",
       ["luacheck.stages.detect_empty_statements"] = "src/luacheck/stages/detect_empty_statements.lua",
       ["luacheck.stages.detect_globals"] = "src/luacheck/stages/detect_globals.lua",
+      ["luacheck.stages.check_table_fields"] = "src/luacheck/stages/check_table_fields.lua",
       ["luacheck.stages.detect_reversed_fornum_loops"] = "src/luacheck/stages/detect_reversed_fornum_loops.lua",
       ["luacheck.stages.detect_unbalanced_assignments"] = "src/luacheck/stages/detect_unbalanced_assignments.lua",
       ["luacheck.stages.detect_uninit_accesses"] = "src/luacheck/stages/detect_uninit_accesses.lua",
