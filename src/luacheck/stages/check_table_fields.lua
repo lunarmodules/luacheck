@@ -1,4 +1,5 @@
 local utils = require "luacheck.utils"
+local builtin_standards = require 'luacheck.builtin_standards'
 
 local stage = {}
 
@@ -20,9 +21,12 @@ function ClosureState:__init(chstate)
    -- Map from table name => table info. See new_local_table for the format.
    self.current_tables = {}
 
-   -- externally reference variable means that its fields could potentially all
-   -- be referenced externally
+   -- external access means that any field could be set or accessed, or arbitrary aliases set
    self.external_references_accessed = {}
+   -- after we leave the current scope for any reason, these tables can have arbitrarily different
+   -- fields set, but cannot have additional accesses. (This combines set, i.e. overwriting the entirely variable,
+   -- and mutation, i.e. writing to some fields of the table.)
+   self.external_references_set = {}
 
    self.max_item = 0
 
@@ -202,6 +206,23 @@ function ClosureState:stop_tracking_tables()
    end
 end
 
+-- Leaving the current scope, but we may return to it later
+-- We need to account for externally referenceable variables, which
+-- may be modified or accessed
+function ClosureState:exit_current_scope_for_func_call(node)
+   for table_name in pairs(self.external_references_accessed) do
+      if self.current_tables[table_name] then
+         self:wipe_table_data(table_name)
+      end
+   end
+   for table_name in pairs(self.external_references_set) do
+      local table_info = self.current_tables[table_name]
+      if table_info then
+         table_info.potentially_all_set = node
+      end
+   end
+end
+
 function ClosureState:on_scope_end_for_var(table_name)
    local table_info = self.current_tables[table_name]
    local has_external_references = false
@@ -223,21 +244,41 @@ function ClosureState:on_scope_end()
    end
 end
 
+-- Builtin functions generally cannot access tables in hidden ways
+function ClosureState:is_builtin_function(node)
+   local call_node = node[1]
+   local called_name = call_node[1]
+   if builtin_standards.max[called_name] then
+      if call_node.tag == "Index" then
+         local key = call_node[2][1]
+         if key.tag == "String" and builtin_standards.max[called_name][key] then
+            -- Debug does weird stuff; invalidate everything
+            if called_name == "debug" and key ~= "traceback" then
+               self:stop_tracking_tables()
+               return true
+            else
+               return true
+            end
+         end
+      else
+         return true
+      end
+   end
+   return false
+end
+
 -- A function call leaves the current scope, and does potentially arbitrary modifications
 -- To any externally referencable tables: either upvalues to other functions
 -- Or parameters
 function ClosureState:check_for_function_calls(node)
    if node.tag ~= "Function" then
-      if function_call_tags[node.tag] then
-         self:stop_tracking_tables(node)
-         return true
+      if function_call_tags[node.tag] and not self:is_builtin_function(node) then
+         self:exit_current_scope_for_func_call(node)
       end
 
       for _, sub_node in ipairs(node) do
          if type(sub_node) == "table" then
-            if self:check_for_function_calls(sub_node) then
-               return true
-            end
+            self:check_for_function_calls(sub_node)
          end
       end
    end
@@ -255,6 +296,34 @@ function ClosureState:record_field_accesses(node)
       for _, sub_node in ipairs(node) do
          if type(sub_node) == "table" then
             self:record_field_accesses(sub_node)
+         end
+      end
+   end
+end
+
+-- More complicated than record_table_accesses below
+-- Because invocation can cause accesses to a table at an arbitrary point in logic:
+-- = t[x][y:func()] causes a reference to y (passed to func)
+function ClosureState:record_table_invocations(node)
+   if node.tag == "Invoke" then
+      local self_node = node[1]
+      if self_node.var and self.current_tables[self_node.var.name] then
+         self.current_tables[self_node.var.name].potentially_all_set = node
+         self.current_tables[self_node.var.name].potentially_all_accessed = node
+         self.external_references_accessed[self_node.var.name] = true
+      end
+   end
+
+   if function_call_tags[node.tag] then
+      for _, sub_node in ipairs(node) do
+         if type(sub_node) == 'table' then
+            self:record_table_accesses(sub_node)
+         end
+      end
+   elseif node.tag ~= "Function" then
+      for _, sub_node in ipairs(node) do
+         if type(sub_node) == 'table' then
+            self:record_table_invocations(sub_node)
          end
       end
    end
@@ -297,6 +366,7 @@ function ClosureState:record_table_accesses(node, aliased_node)
       end
    end
 
+   self:record_table_invocations(node)
    return alias_info
 end
 
@@ -469,6 +539,12 @@ local function detect_unused_table_fields(closure, check_state)
          for _,func_scope in pairs(item.lines) do
             for var in pairs(func_scope.accessed_upvalues) do
                closure_state.external_references_accessed[var.name] = true
+            end
+            for var in pairs(func_scope.set_upvalues) do
+               closure_state.external_references_set[var.name] = true
+            end
+            for var in pairs(func_scope.mutated_upvalues) do
+               closure_state.external_references_set[var.name] = true
             end
          end
       end

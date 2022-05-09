@@ -112,24 +112,6 @@ end
       ]])
    end)
 
-   it("stops checking referenced upvalues if function call is known to not have table as an upvalue", function()
-      assert_warnings({}, [[
-local x = {}
-x[1] = 1
-local function printx() x = 1 end
-local function ret2() return 2 end
-ret2()
-x[1] = 1
-
-local y = {}
-y[1] = 1
-function y.printx() y = 1 end
-function y.ret2() return 2 end
-y.ret2()
-y[1] = 1
-      ]])
-   end)
-
    it("halts checking at the end of control flow blocks with jumps", function()
       assert_warnings({}, [[
 local x = {1}
@@ -154,31 +136,6 @@ while math.random(0,1) == 1 do
 end
 
 a[1] = a[1]
-      ]])
-   end)
-
-   it("stops checking if a function is called", function()
-      assert_warnings({
-         {line = 8, column = 3, name = 'y', end_column = 3, field = 'x', code = '315', set_is_nil = '' },
-         {line = 8, column = 9, name = 'y', end_column = 9, field = 'a', code = '325', },
-         {line = 14, column = 9, name = 't', end_column = 9, field = 'a', code = '325', },
-      }, [[
-local x = {}
-x.y = 1
-print("Unrelated text")
-x.y = 2
-x[1] = x.z
-
-local y = {}
-y.x = y.a
-y.x = 1
-function y:func() return 1 end
-y:func()
-
-local t = {}
-t.x = t.a
-local var = 'func'
-t.x = y[var]() + 1
       ]])
    end)
 end)
