@@ -25,6 +25,11 @@ function ClosureState:__init(chstate)
    self.external_references_accessed = {}
 
    self.max_item = 0
+
+   -- Luacheck's linearized item format doesn't explicitly have a node for the "end" tag
+   -- This tracks where end tags would be, so that we can stop tracking
+   -- This pattern won't be workable if this eventually gets extended to support control flow
+   self.jump_destinations = {}
 end
 
 -- Start keeping track of a local table
@@ -417,6 +422,7 @@ function ClosureState:handle_eval(item)
 end
 
 function ClosureState:handle_jump(item)
+   self.jump_destinations[item.to] = true
    if item.to > self.max_item then
       -- return; see comment under handle_control_flow_item
       self:on_scope_end()
@@ -428,7 +434,7 @@ end
 local item_callbacks = {
    Noop = ClosureState.handle_control_flow_item,
    Jump = ClosureState.handle_jump,
-   Cjump = ClosureState.stop_tracking_tables,
+   Cjump = ClosureState.handle_jump,
    Eval = ClosureState.handle_eval,
    Local = ClosureState.handle_local_or_set_item,
    Set = ClosureState.handle_local_or_set_item
@@ -453,6 +459,9 @@ local function detect_unused_table_fields(closure, check_state)
    closure_state.max_item = #closure.items
 
    for item_index = 1, #closure.items do
+      if closure_state.jump_destinations[item_index] then
+         closure_state:stop_tracking_tables()
+      end
       -- Function declaration: function could potentially survive this scope
       -- Preserving a reference to its upvalues
       local item = closure.items[item_index]

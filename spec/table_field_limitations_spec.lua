@@ -130,6 +130,33 @@ y[1] = 1
       ]])
    end)
 
+   it("halts checking at the end of control flow blocks with jumps", function()
+      assert_warnings({}, [[
+local x = {1}
+if math.rand(0,1) ~= 1 then
+   x = {}
+end
+
+x[1] = x[1]
+
+local y = {1}
+if math.random(0,1) == 1 then
+   y[1] = 2
+else
+   y = {}
+end
+
+y[1] = y[1]
+
+local a = {1}
+while math.random(0,1) == 1 do
+   a = {}
+end
+
+a[1] = a[1]
+      ]])
+   end)
+
    it("stops checking if a function is called", function()
       assert_warnings({
          {line = 8, column = 3, name = 'y', end_column = 3, field = 'x', code = '315', set_is_nil = '' },
