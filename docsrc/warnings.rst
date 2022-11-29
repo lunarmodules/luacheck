@@ -31,7 +31,9 @@ Code Description
 312  Value of an argument is unused.
 313  Value of a loop variable is unused.
 314  Value of a field in a table literal is unused.
+315  Unused table field
 321  Accessing uninitialized local variable.
+325  Accessing unitialized table field
 331  Value assigned to a local variable is mutated but never accessed.
 341  Mutating uninitialized local variable.
 411  Redefining a local variable.
