@@ -1,0 +1,7 @@
+return {
+   dependencies = {
+      argparse = "0.7.1-1",
+      lua = "5.4-1",
+      luafilesystem = "1.8.0-1"
+   },
+}
