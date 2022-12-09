@@ -40,7 +40,7 @@ jobs:
           luarocks install --deps-only luacheck-dev-1.rockspec
 
       - name: Build ‘luacheck’ (bootstrap)
-        run: luarocks make --pin
+        run: luarocks make
 
       - name: Run ‘luacheck’ (dogfood)
         run: luacheck .
