@@ -172,14 +172,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Luacheck linter
-        uses: lunarmodules/luacheck@v0
+        uses: lunarmodules/luacheck@v1
 ```
 
 By default the GH Action is configured to run `luacheck .`, but you can also pass it your own `args` to replace the default input of `.`.
 
 ```yaml
       - name: Luacheck linter
-        uses: lunarmodules/luacheck@v0
+        uses: lunarmodules/luacheck@v1
         with:
             args: myfile.lua
 ```
