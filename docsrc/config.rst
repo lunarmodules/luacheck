@@ -194,4 +194,6 @@ Default per-path std overrides
    files["**/*.luacheckrc"].std = "+luacheckrc"
    files["**/config.ld"].std = "+ldoc"
 
+These are added to the global ``std`` specified in the config file.
 Each of these can be overriden by setting a different ``std`` value for the corresponding key in ``files``.
+Setting ``std`` on the commandline removes these default overrides.
