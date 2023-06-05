@@ -8,6 +8,7 @@ local love = {
       getVersion = empty,
       conf = read_write,
       directorydropped = read_write,
+      displayrotated = read_write,
       draw = read_write,
       errhand = read_write,
       errorhandler = read_write,
@@ -18,6 +19,7 @@ local love = {
       gamepadreleased = read_write,
       handlers = read_write,
       hasDeprecationOutput = empty,
+      isVersionCompatible = read_write,
       joystickadded = read_write,
       joystickaxis = read_write,
       joystickhat = read_write,
@@ -87,17 +89,17 @@ local love = {
          "getDPIScale","getPixelDimensions","getPixelHeight","getPixelWidth","isActive","getDefaultMipmapFilter",
          "setDefaultMipmapFilter"),
 
-      image = standards.def_fields("isCompressed","newCompressedData","newImageData","newCubeFaces"),
+      image = standards.def_fields("isCompressed","newCompressedData","newImageData"),
 
-      joystick = standards.def_fields("getJoystickCount","getJoysticks","loadGamepadMappings",
-         "saveGamepadMappings","setGamepadMapping"),
+      joystick = standards.def_fields("getGamepadMappingString","getJoystickCount","getJoysticks",
+         "loadGamepadMappings","saveGamepadMappings","setGamepadMapping"),
 
       keyboard = standards.def_fields("getKeyFromScancode","getScancodeFromKey","hasKeyRepeat","hasTextInput",
          "isDown","isScancodeDown","setKeyRepeat","setTextInput","hasScreenKeyboard"),
 
-      math = standards.def_fields("compress","decompress","gammaToLinear","getRandomSeed","getRandomState",
-         "isConvex","linearToGamma","newBezierCurve","newRandomGenerator","noise","random",
-         "randomNormal","setRandomSeed","setRandomState","triangulate","newTransform"),
+      math = standards.def_fields("colorFromBytes","colorToBytes","compress","decompress","gammaToLinear",
+         "getRandomSeed","getRandomState","isConvex","linearToGamma","newBezierCurve","newRandomGenerator","noise",
+         "random","randomNormal","setRandomSeed","setRandomState","triangulate","newTransform"),
 
       mouse = standards.def_fields("getCursor","getPosition","getRelativeMode","getSystemCursor","getX",
          "getY","hasCursor","isDown","isGrabbed","isVisible","newCursor","setCursor","setGrabbed",
@@ -122,12 +124,12 @@ local love = {
 
       video = standards.def_fields("newVideoStream"),
 
-      window = standards.def_fields("close","fromPixels","getDisplayName","getFullscreen",
-         "getFullscreenModes","getIcon","getMode","getPixelScale","getPosition","getTitle",
-         "hasFocus","hasMouseFocus","isDisplaySleepEnabled","isMaximized","isOpen","isVisible",
-         "maximize","minimize","requestAttention","setDisplaySleepEnabled","setFullscreen",
-         "setIcon","setMode","setPosition","setTitle","showMessageBox","toPixels",
-         "updateMode","isMinimized","restore","getDPIScale")
+      window = standards.def_fields("close","fromPixels","getDesktopDimensions","getDisplayCount","getDisplayName",
+         "getDisplayOrientation","getFullscreen","getFullscreenModes","getIcon","getMode","getPosition","getSafeArea",
+         "getTitle","getVSync","hasFocus","hasMouseFocus","isDisplaySleepEnabled","isMaximized","isOpen","isVisible",
+         "maximize","minimize","requestAttention","setDisplaySleepEnabled","setFullscreen","setIcon","setMode",
+         "setPosition","setTitle","setVSync","showMessageBox","toPixels","updateMode","isMinimized","restore",
+         "getDPIScale")
    }
 }
 
