@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.1] - 2023-06-09
+
+### Features
+
+- Update Löve standard to 11.4 (#95) - @RunningDroid
+- Documentation improvements (#92 and #89) - @rcloran and @hamrach
+
+### Bug Fixes
+
+- Correct compound operators to not crash on modifying upvalues (#96) - @arichard4
+- Fix warning 582 (error prone negation) not applying to subexpressions (#94) - @appgurueu
+
 ## [1.1.0] - 2022-12-19
 
 ### Features
