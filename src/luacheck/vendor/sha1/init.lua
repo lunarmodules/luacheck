@@ -8,7 +8,7 @@ local sha1 = {
 SHA-1 secure hash and HMAC-SHA1 signature computation in Lua,
 using bit and bit32 modules and Lua 5.3 operators when available
 and falling back to a pure Lua implementation on Lua 5.1.
-Based on code orignally by Jeffrey Friedl and modified by
+Based on code originally by Jeffrey Friedl and modified by
 Eike Decker and Enrique García Cota.]],
    _LICENSE = [[
 MIT LICENSE

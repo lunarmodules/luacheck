@@ -35,7 +35,7 @@ local sample = {
 -- JSON
 local json = standards.def_fields("decode", "decodeFile", "encode", "encodePretty", "encodeToFile")
 
--- Text Alignement
+-- Text Alignment
 local kTextAlignment = standards.def_fields("left", "center", "right")
 
 -- Playdate SDK

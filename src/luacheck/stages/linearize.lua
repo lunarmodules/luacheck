@@ -57,7 +57,7 @@ function Line:__init(node, parent, value)
    self.accessed_upvalues = {}
    -- Maps variables to arrays of mutating items.
    self.mutated_upvalues = {}
-   -- Maps variables to arays of setting items.
+   -- Maps variables to arrays of setting items.
    self.set_upvalues = {}
    self.lines = {}
    self.node = node
@@ -729,7 +729,7 @@ function LinState:scan_expr_Function(item, node)
 end
 
 -- Builds linear representation (line) of AST and assigns it as `chstate.top_line`.
--- Assings an array of all lines as `chstate.lines`.
+-- Assigns an array of all lines as `chstate.lines`.
 -- Adds warnings for redefined/shadowed locals and unused labels.
 function stage.run(chstate)
    local linstate = LinState(chstate)

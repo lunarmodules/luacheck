@@ -104,7 +104,7 @@ end
 
 -- Normalizes inputs and filters inputs using `exclude_files` and `include_files` options.
 -- Returns an array of prepared input tables.
--- Differences between normal and prepated inputs:
+-- Differences between normal and prepared inputs:
 -- * Prepared inputs can't have `rockspec_path` field.
 -- * Prepared inputs can't have `path` pointing to a directory (unless it has an error).
 -- * Prepared inputs have `filename` field if possible (copied from `path` if not given).

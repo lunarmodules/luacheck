@@ -239,7 +239,7 @@ local function options_and_boundaries_comparator(t1, t2)
    end
 end
 
--- Applies bounadaries withing `inline_options_and_boundaries` to replace them with pop count
+-- Applies boundaries within `inline_options_and_boundaries` to replace them with pop count
 -- instructions in the resulting array.
 -- Comments on lines with code are popped at the end of line.
 -- Warns about unpaired push and pop directives.

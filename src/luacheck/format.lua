@@ -6,7 +6,7 @@ local format = {}
 local color_support = not utils.is_windows or os.getenv("ANSICON")
 
 local function get_message_format(warning)
-   local message_format = assert(stages.warnings[warning.code], "Unkown warning code " .. warning.code).message_format
+   local message_format = assert(stages.warnings[warning.code], "Unknown warning code " .. warning.code).message_format
 
    if type(message_format) == "function" then
       return message_format(warning)

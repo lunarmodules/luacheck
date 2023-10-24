@@ -110,7 +110,7 @@ local function max_n(t)
 end
 
 -- Serializes a value into buffer.
--- `strings` is a table mapping string values to where they first occured or to name of local
+-- `strings` is a table mapping string values to where they first occurred or to name of local
 -- variable used to represent it.
 -- Array part contains representations of values saved into locals.
 local function add_value(buffer, strings, value, level)

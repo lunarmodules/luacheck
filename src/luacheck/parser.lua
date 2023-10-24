@@ -900,7 +900,7 @@ local function parse_expression_statement(state)
 
       if primary_expression.tag == "Call" or primary_expression.tag == "Invoke" then
          if lhs then
-            -- The is an assingment, and a call is not valid in lhs.
+            -- The is an assignment, and a call is not valid in lhs.
             parse_error(state, "expected call or indexing")
          else
             -- This is a call.
