@@ -79,18 +79,26 @@ local function in_scope(var, index)
 end
 
 local function contains_call(node)
+   if node._contains_call ~= nil then
+      -- return cached result
+      return node._contains_call
+   end
+
    if node.tag == "Call" or node.tag == "Invoke" then
+      node._contains_call = true
       return true
    end
 
    if node.tag ~= "Function" then
       for _, sub_node in ipairs(node) do
          if type(sub_node) == 'table' and contains_call(sub_node) then
+            node._contains_call = true
             return true
          end
       end
    end
 
+   node._contains_call = false
    return false
 end
 
