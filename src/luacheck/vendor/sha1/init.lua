@@ -39,7 +39,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.]]
 sha1.version = "0.6.0"
 
 local function choose_ops()
-   if _VERSION:find("5%.3") then
+   if tonumber(_VERSION:match"%d+%.%d+") >= 5.3 then
       return "lua53_ops"
    elseif pcall(require, "bit") then
       return "bit_ops"
