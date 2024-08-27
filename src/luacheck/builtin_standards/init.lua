@@ -1,5 +1,6 @@
 local love = require "luacheck.builtin_standards.love"
 local minetest = require "luacheck.builtin_standards.minetest"
+local pandoc = require "luacheck.builtin_standards.pandoc"
 local playdate = require "luacheck.builtin_standards.playdate"
 local ngx = require "luacheck.builtin_standards.ngx"
 local standards = require "luacheck.standards"
@@ -344,25 +345,10 @@ builtin_standards.sile = {
    }
 }
 
--- https://pandoc.org/lua-filters.html#global-variables
-builtin_standards.pandoc = {
-   globals = {
-      -- Global modules
-      "pandoc", "lpeg", "re",
-      -- Global variables passed to filters
-      "FORMAT", "PANDOC_READER_OPTIONS", "PANDOC_WRITER_OPTIONS", "PANDOC_VERSION", "PANDOC_API_VERSION",
-      "PANDOC_SCRIPT_FILE", "PANDOC_STATE",
-      -- Globals that can be used to create filter elements
-      -- - top level
-      "Inlines", "Inline", "Blocks", "Block", "Meta", "Pandoc",
-      -- - inline
-      "Cite", "Code", "Emph", "Image", "LineBreak", "Link", "Math", "Note", "Quoted", "RawInline", "SmallCaps",
-      "SoftBreak", "Space", "Span", "Str", "Strikeout", "Strong", "Subscript", "Superscript", "Underline",
-      -- - block
-      "BlockQuote", "BulletList", "CodeBlock", "DefinitionList", "Div", "Figure", "Header", "HorizontalRule",
-      "LineBlock", "OrderedList", "Para", "Plain", "RawBlock", "Table",
-   }
-}
+builtin_standards.pandoc = pandoc.pandoc
+builtin_standards.pandoc_filter = pandoc.filter
+builtin_standards.pandoc_reader = pandoc.reader
+builtin_standards.pandoc_writer = pandoc.writer
 
 builtin_standards.none = {}
 
