@@ -344,6 +344,14 @@ builtin_standards.sile = {
    }
 }
 
+-- https://pandoc.org/lua-filters.html#global-variables
+builtin_standards.pandoc = {
+   globals = {
+      "pandoc", "lpeg", "re",
+      "PANDOC_READER_OPTIONS", "PANDOC_WRITER_OPTIONS", "PANDOC_VERSION", "PANDOC_API_VERSION", "PANDOC_SCRIPT_FILE", "PANDOC_STATE",
+   }
+}
+
 builtin_standards.none = {}
 
 return builtin_standards
