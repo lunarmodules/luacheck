@@ -10,15 +10,8 @@ end
 
 local common = {
    read_globals = {
+      "PANDOC_VERSION", "PANDOC_API_VERSION", "PANDOC_STATE",
       "pandoc", "lpeg", "re",
-   },
-}
-
--- https://pandoc.org/lua-filters.html
-local filter = {
-   read_globals = {
-      "FORMAT", "PANDOC_READER_OPTIONS", "PANDOC_WRITER_OPTIONS", "PANDOC_VERSION", "PANDOC_API_VERSION",
-      "PANDOC_SCRIPT_FILE", "PANDOC_STATE",
    },
    globals = {
       -- document types
@@ -29,6 +22,13 @@ local filter = {
       -- block types
       "BlockQuote", "BulletList", "CodeBlock", "DefinitionList", "Div", "Figure", "Header", "HorizontalRule",
       "LineBlock", "OrderedList", "Para", "Plain", "RawBlock", "Table",
+   },
+}
+
+-- https://pandoc.org/lua-filters.html
+local filter = {
+   read_globals = {
+      "FORMAT", "PANDOC_READER_OPTIONS", "PANDOC_WRITER_OPTIONS", "PANDOC_SCRIPT_FILE"
    },
 }
 
@@ -44,10 +44,16 @@ local custom = {
    },
 }
 
+local script = {
+   globals = {
+   }
+}
+
 local variants = {
-    pandoc = { globals = combine(common, filter, custom) },
+    pandoc = { globals = combine(common, filter, custom, script) },
     filter = { globals = combine(common, filter) },
     custom = { globals = combine(common, custom) },
+    script = { globals = combine(common, script) },
 }
 
 return variants
