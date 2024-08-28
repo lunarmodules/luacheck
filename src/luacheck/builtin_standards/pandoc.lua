@@ -33,25 +33,21 @@ local filter = {
 }
 
 -- https://pandoc.org/custom-readers.html
-local reader = {
-   globals = {
-      "Reader", "Extensions", "ByteStringReader"
-   },
-}
-
 -- https://pandoc.org/custom-writers.html
-local writer = {
+local custom = {
    globals = {
-      "PANDOC_DOCUMENT", "Writer", "Extensions", "Doc", "Template",
-      "Blocksep", "ByteStringWriter", "CaptionedImage", "DisplayMath", "DoubleQuoted", "InlineMath", "SingleQuoted",
+      -- custom scope
+      "PANDOC_DOCUMENT",
+      "ByteStringReader", "ByteStringWriter", "Doc", "Extensions", "Reader", "Template", "Writer",
+      -- extra types applicable to readers/writers
+      "Blocksep", "CaptionedImage", "DisplayMath", "DoubleQuoted", "InlineMath", "SingleQuoted",
    },
 }
 
 local variants = {
-    pandoc = { globals = combine(common, filter, reader, writer) },
+    pandoc = { globals = combine(common, filter, custom) },
     filter = { globals = combine(common, filter) },
-    reader = { globals = combine(common, reader) },
-    writer = { globals = combine(common, writer) },
+    custom = { globals = combine(common, custom) },
 }
 
 return variants

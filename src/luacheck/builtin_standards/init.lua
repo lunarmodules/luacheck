@@ -347,8 +347,7 @@ builtin_standards.sile = {
 
 builtin_standards.pandoc = pandoc.pandoc
 builtin_standards.pandoc_filter = pandoc.filter
-builtin_standards.pandoc_reader = pandoc.reader
-builtin_standards.pandoc_writer = pandoc.writer
+builtin_standards.pandoc_custom = pandoc.custom
 
 builtin_standards.none = {}
 
