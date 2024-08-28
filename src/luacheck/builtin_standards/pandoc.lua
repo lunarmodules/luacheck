@@ -28,7 +28,8 @@ local common = {
 -- https://pandoc.org/lua-filters.html
 local filter = {
    read_globals = {
-      "FORMAT", "PANDOC_READER_OPTIONS", "PANDOC_WRITER_OPTIONS", "PANDOC_SCRIPT_FILE"
+      "FORMAT",
+      "PANDOC_READER_OPTIONS", "PANDOC_WRITER_OPTIONS", "PANDOC_SCRIPT_FILE",
    },
 }
 
@@ -38,6 +39,7 @@ local custom = {
    globals = {
       -- custom scope
       "PANDOC_DOCUMENT",
+      "PANDOC_READER_OPTIONS", "PANDOC_WRITER_OPTIONS", "PANDOC_SCRIPT_FILE",
       "ByteStringReader", "ByteStringWriter", "Doc", "Extensions", "Reader", "Template", "Writer",
       -- extra types applicable to readers/writers
       "Blocksep", "CaptionedImage", "DisplayMath", "DoubleQuoted", "InlineMath", "SingleQuoted",
