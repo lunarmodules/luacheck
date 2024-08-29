@@ -1,5 +1,6 @@
 local love = require "luacheck.builtin_standards.love"
 local minetest = require "luacheck.builtin_standards.minetest"
+local pandoc = require "luacheck.builtin_standards.pandoc"
 local playdate = require "luacheck.builtin_standards.playdate"
 local ngx = require "luacheck.builtin_standards.ngx"
 local standards = require "luacheck.standards"
@@ -343,6 +344,11 @@ builtin_standards.sile = {
       "SILE", "SU", "luautf8", "pl", "fluent", "executablePath", "extendSilePath", "CASILE"
    }
 }
+
+builtin_standards.pandoc = pandoc.pandoc
+builtin_standards.pandoc_filter = pandoc.filter
+builtin_standards.pandoc_custom = pandoc.custom
+builtin_standards.pandoc_script = pandoc.script
 
 builtin_standards.none = {}
 

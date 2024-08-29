@@ -87,6 +87,10 @@ Option                                  Meaning
                                         * ``rockspec`` - globals allowed in rockspecs, by default added for files ending with ``.rockspec``;
                                         * ``luacheckrc`` - globals allowed in Luacheck configs, by default added for files ending with ``.luacheckrc``;
                                         * ``ldoc`` - globals allowed in LDoc config, by default added for files named ``config.ld``;
+                                        * ``pandoc`` - globals allowed in Pandoc Lua in any context;
+                                        * ``pandoc_filter`` - globals allowed in Pandoc Lua, subset specific to filters;
+                                        * ``pandoc_custom`` - globals allowed in Pandoc Lua, subset specific to custom reader/writers;
+                                        * ``pandoc_script`` - globals allowed in Pandoc Lua, subset specific to scripts;
                                         * ``sile`` - globals allowed in The SILE Typesetter and its package ecosystem;
                                         * ``none`` - no standard globals.
 
