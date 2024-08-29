@@ -1,10 +1,9 @@
 local package_name = "luacheck"
-local package_version = "dev"
+local package_version = "1.0.0"
 local rockspec_revision = "1"
 local github_account_name = "lunarmodules"
 local github_repo_name = package_name
 
-rockspec_format = "3.0"
 package = package_name
 version = package_version .. "-" .. rockspec_revision
 
@@ -30,22 +29,12 @@ dependencies = {
    "argparse >= 0.6.0",
    "luafilesystem >= 1.6.3"
 }
-
-test_dependencies = {
-   "busted",
-}
-
-test = {
-   type = "busted",
-}
-
 build = {
    type = "builtin",
    modules = {
       luacheck = "src/luacheck/init.lua",
       ["luacheck.builtin_standards"] = "src/luacheck/builtin_standards/init.lua",
       ["luacheck.builtin_standards.love"] = "src/luacheck/builtin_standards/love.lua",
-      ["luacheck.builtin_standards.minetest"] = "src/luacheck/builtin_standards/minetest.lua",
       ["luacheck.builtin_standards.playdate"] = "src/luacheck/builtin_standards/playdate.lua",
       ["luacheck.builtin_standards.ngx"] = "src/luacheck/builtin_standards/ngx.lua",
       ["luacheck.cache"] = "src/luacheck/cache.lua",
@@ -69,12 +58,10 @@ build = {
       ["luacheck.serializer"] = "src/luacheck/serializer.lua",
       ["luacheck.stages"] = "src/luacheck/stages/init.lua",
       ["luacheck.stages.detect_bad_whitespace"] = "src/luacheck/stages/detect_bad_whitespace.lua",
-      ["luacheck.stages.detect_compound_operators"] = "src/luacheck/stages/detect_compound_operators.lua",
       ["luacheck.stages.detect_cyclomatic_complexity"] = "src/luacheck/stages/detect_cyclomatic_complexity.lua",
       ["luacheck.stages.detect_empty_blocks"] = "src/luacheck/stages/detect_empty_blocks.lua",
       ["luacheck.stages.detect_empty_statements"] = "src/luacheck/stages/detect_empty_statements.lua",
       ["luacheck.stages.detect_globals"] = "src/luacheck/stages/detect_globals.lua",
-      ["luacheck.stages.check_table_fields"] = "src/luacheck/stages/check_table_fields.lua",
       ["luacheck.stages.detect_reversed_fornum_loops"] = "src/luacheck/stages/detect_reversed_fornum_loops.lua",
       ["luacheck.stages.detect_unbalanced_assignments"] = "src/luacheck/stages/detect_unbalanced_assignments.lua",
       ["luacheck.stages.detect_uninit_accesses"] = "src/luacheck/stages/detect_uninit_accesses.lua",

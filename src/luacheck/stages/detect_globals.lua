@@ -234,7 +234,7 @@ local function detect_globals_in_line(chstate, line)
          if item.rhs then
             detect_in_nodes(chstate, item, item.rhs, is_top_line)
          end
-      elseif item.tag == "Set" then
+      elseif item.tag == "Set" or item.tag == "OpSet" then
          detect_in_nodes(chstate, item, item.lhs, is_top_line, true)
          detect_in_nodes(chstate, item, item.rhs, is_top_line)
       end

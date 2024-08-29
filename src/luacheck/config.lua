@@ -5,6 +5,7 @@ local fs = require "luacheck.fs"
 local globbing = require "luacheck.globbing"
 local standards = require "luacheck.standards"
 local utils = require "luacheck.utils"
+local luacheck = require "luacheck"
 
 local config = {}
 
@@ -228,6 +229,7 @@ local function add_default_path_options(opts)
    set_default_std(files, "**/tests/**/*_spec.lua", "+busted")
    set_default_std(files, "**/*.rockspec", "+rockspec")
    set_default_std(files, "**/*.luacheckrc", "+luacheckrc")
+   set_default_std(files, "**/config.ld", "+ldoc")
 end
 
 local fallback_config = {options = {}, anchor_dir = ""}
@@ -475,12 +477,16 @@ function ConfigStack:get_top_options()
       if conf.options.cache ~= nil then
          if conf.options.cache == true then
             if not res.cache then
-               res.cache = fs.normalize(fs.join(last_anchor_dir or current_dir, cache.get_default_dir()))
+               res.cache = fs.normalize(fs.join(
+                  last_anchor_dir or current_dir,
+                  cache.get_default_dir(),
+                  luacheck._VERSION
+               ))
             end
          elseif conf.options.cache == false then
             res.cache = false
          else
-            res.cache = fs.normalize(fs.join(anchor_dir, conf.options.cache))
+            res.cache = fs.normalize(fs.join(anchor_dir, conf.options.cache, luacheck._VERSION))
          end
       end
    end

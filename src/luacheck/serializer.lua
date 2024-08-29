@@ -9,7 +9,7 @@ local option_fields = {
    "unused_secondaries", "allow_defined", "allow_defined_top", "module",
    "read_globals", "new_globals", "new_read_globals", "enable", "only", "not_globals",
    "max_line_length", "max_code_line_length", "max_string_line_length", "max_comment_line_length",
-   "max_cyclomatic_complexity"
+   "max_cyclomatic_complexity", "operators"
 }
 
 local function compress_table(t, fields)
@@ -110,7 +110,7 @@ local function max_n(t)
 end
 
 -- Serializes a value into buffer.
--- `strings` is a table mapping string values to where they first occured or to name of local
+-- `strings` is a table mapping string values to where they first occurred or to name of local
 -- variable used to represent it.
 -- Array part contains representations of values saved into locals.
 local function add_value(buffer, strings, value, level)

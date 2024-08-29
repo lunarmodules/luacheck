@@ -57,7 +57,7 @@ function Line:__init(node, parent, value)
    self.accessed_upvalues = {}
    -- Maps variables to arrays of mutating items.
    self.mutated_upvalues = {}
-   -- Maps variables to arays of setting items.
+   -- Maps variables to arrays of setting items.
    self.set_upvalues = {}
    self.lines = {}
    self.node = node
@@ -189,6 +189,19 @@ end
 local function new_set_item(node)
    return {
       tag = "Set",
+      node = node,
+      lhs = node[1],
+      rhs = node[2],
+      accesses = {},
+      mutations = {},
+      used_values = {},
+      lines = {}
+   }
+end
+
+local function new_opset_item(node)
+   return {
+      tag = "OpSet",
       node = node,
       lhs = node[1],
       rhs = node[2],
@@ -515,6 +528,25 @@ function LinState:emit_stmt_Set(node)
    self:emit(item)
 end
 
+function LinState:emit_stmt_OpSet(node)
+   local item = new_opset_item(node)
+   self:scan_exprs(item, node[2])
+
+   for _, expr in ipairs(node[1]) do
+      if expr.tag == "Id" then
+         local var = self:check_var(expr)
+
+         if var then
+            self:register_upvalue_action(item, var, "set_upvalues")
+         end
+      else
+         assert(expr.tag == "Index")
+         self:scan_lhs_index(item, expr)
+      end
+   end
+
+   self:emit(item)
+end
 
 function LinState:scan_expr(item, node)
    local scanner = self["scan_expr_" .. node.tag]
@@ -611,13 +643,15 @@ function LinState:scan_expr_Op(item, node)
    end
 end
 
+LinState.scan_expr_OpSet = LinState.scan_expr_Op
+
 -- Puts tables {var = value} into field `set_variables` of items in line which set values.
 -- Registers set values in field `values` of variables.
 function LinState:register_set_variables()
    local line = self.lines.top
 
    for _, item in ipairs(line.items) do
-      if item.tag == "Local" or item.tag == "Set" then
+      if item.tag == "Local" or item.tag == "Set" or item.tag == "OpSet" then
          item.set_variables = {}
 
          local is_init = item.tag == "Local"
@@ -641,6 +675,10 @@ function LinState:register_set_variables()
             local value
 
             if node.var then
+               -- OpSet also accesses
+               if item.tag == "OpSet" then
+                  self:mark_access(item, node)
+               end
                value = new_value(node, item.rhs and item.rhs[i] or unpacking_item, item, is_init)
                item.set_variables[node.var] = value
                table.insert(node.var.values, value)
@@ -691,7 +729,7 @@ function LinState:scan_expr_Function(item, node)
 end
 
 -- Builds linear representation (line) of AST and assigns it as `chstate.top_line`.
--- Assings an array of all lines as `chstate.lines`.
+-- Assigns an array of all lines as `chstate.lines`.
 -- Adds warnings for redefined/shadowed locals and unused labels.
 function stage.run(chstate)
    local linstate = LinState(chstate)

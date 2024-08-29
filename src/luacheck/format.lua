@@ -4,9 +4,11 @@ local utils = require "luacheck.utils"
 local format = {}
 
 local color_support = not utils.is_windows or os.getenv("ANSICON")
+-- Disable colors when NO_COLOR is set, see https://no-color.org/.
+color_support = color_support and not os.getenv("NO_COLOR")
 
 local function get_message_format(warning)
-   local message_format = assert(stages.warnings[warning.code], "Unkown warning code " .. warning.code).message_format
+   local message_format = assert(stages.warnings[warning.code], "Unknown warning code " .. warning.code).message_format
 
    if type(message_format) == "function" then
       return message_format(warning)

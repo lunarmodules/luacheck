@@ -2,8 +2,8 @@
 
 [![Join the chat at https://gitter.im/luacheck/Lobby](https://badges.gitter.im/luacheck/Lobby.svg)](https://gitter.im/luacheck/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-[![Luacheck](https://img.shields.io/github/workflow/status/lunarmodules/luacheck/Luacheck?label=Luacheck&logo=Lua)](https://github.com/lunarmodules/luacheck/actions?workflow=Luacheck)
-[![Busted](https://img.shields.io/github/workflow/status/lunarmodules/luacheck/Busted?label=Busted&logo=Lua)](https://github.com/lunarmodules/luacheck/actions?workflow=Busted)
+[![Luacheck](https://img.shields.io/github/actions/workflow/status/lunarmodules/luacheck/luacheck.yml?branch=master&label=Luacheck&logo=Lua)](https://github.com/lunarmodules/luacheck/actions?workflow=Luacheck)
+[![Busted](https://img.shields.io/github/actions/workflow/status/lunarmodules/luacheck/busted.yml?branch=master&label=Busted&logo=Lua)](https://github.com/lunarmodules/luacheck/actions?workflow=Busted)
 [![Coverage Status](https://img.shields.io/coveralls/github/lunarmodules/luacheck?label=Coveralls&logo=Coveralls)](https://coveralls.io/github/lunarmodules/luacheck?branch=master)
 [![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/lunarmodules/luacheck?label=Tag&logo=GitHub)](https://github.com/lunarmodules/luacheck/releases)
 [![Luarocks](https://img.shields.io/luarocks/v/lunarmodules/luacheck?label=Luarocks&logo=Lua)](https://luarocks.org/modules/lunarmodules/luacheck)
@@ -40,7 +40,7 @@ For parallel checking Luacheck additionally requires [LuaLanes](https://github.c
 ### Windows binary download
 
 For Windows there is single-file 64-bit binary distribution, bundling Lua 5.4.4, Luacheck, LuaFileSystem, and LuaLanes using [LuaStatic](https://github.com/ers35/luastatic):
-[download](https://github.com/lunarmodules/luacheck/releases/download/0.26.1/luacheck.exe).
+[download](https://github.com/lunarmodules/luacheck/releases/download/v1.2.0/luacheck.exe).
 
 ## Basic usage
 
@@ -109,13 +109,13 @@ Documentation can be built using [Sphinx](http://sphinx-doc.org/): `sphinx-build
 
 ## Development
 
-Luacheck is currently in development. The latest released version is 0.26.1. The interface of the `luacheck` module may change between minor releases. The command line interface is fairly stable.
+Luacheck is currently in development. The latest released version is v1.2.0. The interface of the `luacheck` module may change between minor releases. The command line interface is fairly stable.
 
 Use the Luacheck issue tracker on GitHub to submit bugs, suggestions and questions. Any pull requests are welcome, too.
 
 ## Building and testing
 
-After the Luacheck repo is cloned and changes are made, run `luarocks make` (using `sudo` if necessary) from its root directory to install dev version of Luacheck. To run Luacheck using sources in current directory without installing it, run `lua -e 'package.path="./src/?.lua;./src/?/init.lua;"..package.path' bin/luacheck.lua ...`. To test Luacheck, ensure that you have [busted](http://olivinelabs.com/busted/) and [luautf8](https://github.com/starwing/luautf8) installed and run `busted`.
+After the Luacheck repo is cloned and changes are made, run `luarocks make` (using `sudo` if necessary) from its root directory to install dev version of Luacheck. To run Luacheck using sources in current directory without installing it, run `lua -e 'package.path="./src/?.lua;./src/?/init.lua;"..package.path' bin/luacheck.lua ...`. To test Luacheck, ensure that you have [busted](http://olivinelabs.com/busted/), [luautf8](https://github.com/starwing/luautf8), and [luasocket](https://github.com/lunarmodules/luasocket) installed and run `busted`.
 
 ## Docker
 
@@ -172,14 +172,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Luacheck linter
-        uses: lunarmodules/luacheck@v0
+        uses: lunarmodules/luacheck@v1
 ```
 
 By default the GH Action is configured to run `luacheck .`, but you can also pass it your own `args` to replace the default input of `.`.
 
 ```yaml
       - name: Luacheck linter
-        uses: lunarmodules/luacheck@v0
+        uses: lunarmodules/luacheck@v1
         with:
             args: myfile.lua
 ```

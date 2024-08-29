@@ -69,6 +69,12 @@ Links:
          :count "*"
          :argname "<patt>"
          :action "concat"
+         :init(nil),
+      parser:option("--operators", "Allow compound operators matching patterns")
+         :args "+"
+         :count "*"
+         :argname "<patt>"
+         :action "concat"
          :init(nil))
 
    parser:group("Options for configuring allowed globals",
@@ -86,6 +92,8 @@ Links:
          "   luajit - globals of LuaJIT 2.x;\n" ..
          "   ngx_lua - globals of Openresty lua-nginx-module 0.10.10, including standard LuaJIT 2.x globals;\n" ..
          "   love - globals added by LÖVE;\n" ..
+         "   minetest - globals added by minetest;\n" ..
+         "   playdate - globals added by the Playdate SDK;\n" ..
          "   busted - globals added by Busted 2.0, by default added for files ending with _spec.lua within spec, " ..
          "test, and tests subdirectories;\n" ..
          "   rockspec - globals allowed in rockspecs, by default added for files ending with .rockspec;\n" ..

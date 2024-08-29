@@ -193,7 +193,7 @@ end
 
 -- Adds a table with `line`, `column`, and `options` fields to given array.
 -- For each function a table with `options` set to "push" for the function start
--- and a talbe with `options` set to "pop" for the function end are added.
+-- and a table with `options` set to "pop" for the function end are added.
 local function add_function_boundaries(inline_options_and_boundaries, chstate)
    for _, line in ipairs(chstate.top_line.lines) do
       local fn_node = line.node
@@ -239,7 +239,7 @@ local function options_and_boundaries_comparator(t1, t2)
    end
 end
 
--- Applies bounadaries withing `inline_options_and_boundaries` to replace them with pop count
+-- Applies boundaries within `inline_options_and_boundaries` to replace them with pop count
 -- instructions in the resulting array.
 -- Comments on lines with code are popped at the end of line.
 -- Warns about unpaired push and pop directives.

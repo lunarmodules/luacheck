@@ -572,6 +572,16 @@ local binary_operators = {
    ["and"] = "and", ["or"] = "or"
 }
 
+local compound_operators = {
+   ["+"] = "add", ["-"] = "sub",
+   ["*"] = "mul", ["%"] = "mod",
+   ["^"] = "pow",
+   ["/"] = "div", ["//"] = "idiv",
+   ["&"] = "band", ["|"] = "bor", ["~"] = "bxor",
+   ["<<"] = "shl", [">>"] = "shr",
+   [".."] = "concat"
+}
+
 local left_priorities = {
    add = 10, sub = 10,
    mul = 11, mod = 11,
@@ -890,7 +900,7 @@ local function parse_expression_statement(state)
 
       if primary_expression.tag == "Call" or primary_expression.tag == "Invoke" then
          if lhs then
-            -- The is an assingment, and a call is not valid in lhs.
+            -- The is an assignment, and a call is not valid in lhs.
             parse_error(state, "expected call or indexing")
          else
             -- This is a call.
@@ -903,9 +913,31 @@ local function parse_expression_statement(state)
       lhs[#lhs + 1] = primary_expression
    until not test_and_skip_token(state, ",")
 
-   check_and_skip_token(state, "=")
-   local rhs = parse_expression_list(state)
-   return new_inner_node(start_range, rhs[#rhs], "Set", {lhs, rhs})
+   local compound_operator = compound_operators[state.token]
+   if compound_operator then
+      -- This is an assignment in the form `lhs op= rhs`.
+
+      if #lhs ~= 1 then
+         -- Multiple lhs values are not valid
+         parse_error(state, "compound assignment not allowed on tuples near " .. compound_operator .. "=")
+      end
+
+      -- Skip operator.
+      skip_token(state)
+      check_and_skip_token(state, "=")
+
+      local rhs = parse_expression_list(state)
+      if #rhs ~= 1 then
+         parse_error(state, "compound assignment not allowed on tuples near " .. compound_operator .. "=")
+      end
+
+      return new_inner_node(start_range, rhs[1], "OpSet", {lhs, rhs, compound_operator})
+   else
+      -- This is an assignment in the form `lhs = rhs`.
+      check_and_skip_token(state, "=")
+      local rhs = parse_expression_list(state)
+      return new_inner_node(start_range, rhs[#rhs], "Set", {lhs, rhs})
+   end
 end
 
 local function parse_statement(state)

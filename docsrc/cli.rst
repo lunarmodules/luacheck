@@ -86,6 +86,8 @@ Option                                  Meaning
                                         * ``busted`` - globals added by Busted 2.0, by default added for files ending with ``_spec.lua`` within ``spec``, ``test``, and ``tests`` subdirectories;
                                         * ``rockspec`` - globals allowed in rockspecs, by default added for files ending with ``.rockspec``;
                                         * ``luacheckrc`` - globals allowed in Luacheck configs, by default added for files ending with ``.luacheckrc``;
+                                        * ``ldoc`` - globals allowed in LDoc config, by default added for files named ``config.ld``;
+                                        * ``sile`` - globals allowed in The SILE Typesetter and its package ecosystem;
                                         * ``none`` - no standard globals.
 
                                         See :ref:`stds`
@@ -117,6 +119,7 @@ Option                                  Meaning
 ``--ignore | -i <patt> [<patt>] ...``   Filter out warnings matching patterns.
 ``--enable | -e <patt> [<patt>] ...``   Do not filter out warnings matching patterns.
 ``--only | -o <patt> [<patt>] ...``     Filter out warnings not matching patterns.
+``--operators <patt> [<patt>] ...``     Allow compound operators matching patterns. (Multiple assignment not supported, as this is specifically for the Playdate SDK.)
 ``--config <config>``                   Path to custom configuration file (default: ``.luacheckrc``).
 ``--no-config``                         Do not look up custom configuration file.
 ``--default-config <config>``           Default path to custom configuration file, to be used if ``--[no-]config`` is not used and ``.luacheckrc`` is not found.

@@ -437,7 +437,8 @@ local item_callbacks = {
    Cjump = ClosureState.handle_jump,
    Eval = ClosureState.handle_eval,
    Local = ClosureState.handle_local_or_set_item,
-   Set = ClosureState.handle_local_or_set_item
+   Set = ClosureState.handle_local_or_set_item,
+   OpSet = ClosureState.handle_local_or_set_item,
 }
 
 -- Steps through the closure one item at a time

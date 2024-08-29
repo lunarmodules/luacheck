@@ -331,12 +331,34 @@ end
 ]])
    end)
 
-   it("warns about error-prone negations", function()
-      assert.same({
-         {code = "582", line = 1, column = 13, end_column = 21}
-      }, check[[
-         if not 5 > 5 then return end
+   describe("error-prone negations", function()
+      it("as sole conditions", function()
+         assert.same({
+            {code = "582", line = 1, column = 16, end_column = 24}
+         }, check[[
+            if not 5 > 5 then return end
 ]])
+      end)
+
+      it("as subexpressions", function()
+         assert.same({
+            {code = "582", line = 1, column = 25, end_column = 34}
+         }, check[[
+            if not 5 or not 5 == 5 then return end
+]])
+      end)
+
+      it("doesn't warn if properly parenthesized", function()
+         assert.same({}, check[[
+            if (not 5) == 5 then return end
+]])
+      end)
+
+      it("doesn't warn for a literal 'not'", function()
+         assert.same({}, check[[
+            if 5 == "not" then return end
+]])
+      end)
    end)
 
    it("doesn't warn on similarly named variables", function()

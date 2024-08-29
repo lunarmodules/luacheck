@@ -15,7 +15,7 @@ local function detect_uninit_access_in_line(chstate, line)
             for var, accessing_nodes in pairs(item_var_map) do
                -- If there are no values at all reaching this access, not even the empty one,
                -- this item (or a closure containing it) is not reachable from variable definition.
-               -- It will be reported as unreachable code, no need to report uninitalized accesses in it.
+               -- It will be reported as unreachable code, no need to report uninitialized accesses in it.
                if item.used_values[var] then
                   -- If this variable is has only one, empty value then it's already reported as never set,
                   -- no need to report each access.

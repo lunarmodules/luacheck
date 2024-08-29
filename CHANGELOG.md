@@ -2,6 +2,64 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2024-05-24
+
+### Features
+
+- Add builtin standards support for minetest (#108) — @BuckarooBanzay and @appgurueu
+
+### Performance
+
+- Memoize results to addresses speed refression from new feature in v0.26 (#105) — @tomlau10
+
+## [1.1.2] - 2023-12-08
+
+### Features
+
+- Support NO_COLOR environment variable (#102) — @ligurio
+
+### Bug Fixes
+
+- Update SILE builtin with more allowed variables — @alerque
+
+## [1.1.1] - 2023-06-09
+
+### Features
+
+- Update Löve standard to 11.4 (#95) — @RunningDroid
+- Documentation improvements (#92 and #89) — @rcloran and @hramrach
+
+### Bug Fixes
+
+- Correct compound operators to not crash on modifying upvalues (#96) — @arichard4
+- Fix warning 582 (error prone negation) not applying to subexpressions (#94) — @appgurueu
+
+## [1.1.0] - 2022-12-19
+
+### Features
+
+- Add builtin rule set for SILE globals (#79) — @alerque
+- Implement support for compound operators (#66) — @a2 & @arichard4
+
+### Bug Fixes
+
+- Correct circular reference detection visavis OpSet — @arichard4
+- Remove unnecessary symbol from Playdate std (#84) — @DidierMalenfant
+
+## v1.0.0 (2022-08-24)
+
+### Documentation
+
+- [**breaking**] Follow semver guidelines, next release will be v1.x.y
+
+### Features
+
+- Overhaul docker container to run on Lua 5.4 — @alerque
+- Store cached luacheck values per-version in case of changes — @arichard4
+- Set_default_std for ldoc — @Aire-One
+- Add builtin std option for Ldoc globals — @Aire-One
+- Add builtin std option for the Playdate SDK — @DidierMalenfant
+
 ## v0.26.1 (2022-04-23)
 
 ### Bug Fixes

@@ -1,10 +1,9 @@
 local package_name = "luacheck"
-local package_version = "dev"
+local package_version = "1.2.0"
 local rockspec_revision = "1"
 local github_account_name = "lunarmodules"
 local github_repo_name = package_name
 
-rockspec_format = "3.0"
 package = package_name
 version = package_version .. "-" .. rockspec_revision
 
@@ -30,15 +29,6 @@ dependencies = {
    "argparse >= 0.6.0",
    "luafilesystem >= 1.6.3"
 }
-
-test_dependencies = {
-   "busted",
-}
-
-test = {
-   type = "busted",
-}
-
 build = {
    type = "builtin",
    modules = {
@@ -74,7 +64,6 @@ build = {
       ["luacheck.stages.detect_empty_blocks"] = "src/luacheck/stages/detect_empty_blocks.lua",
       ["luacheck.stages.detect_empty_statements"] = "src/luacheck/stages/detect_empty_statements.lua",
       ["luacheck.stages.detect_globals"] = "src/luacheck/stages/detect_globals.lua",
-      ["luacheck.stages.check_table_fields"] = "src/luacheck/stages/check_table_fields.lua",
       ["luacheck.stages.detect_reversed_fornum_loops"] = "src/luacheck/stages/detect_reversed_fornum_loops.lua",
       ["luacheck.stages.detect_unbalanced_assignments"] = "src/luacheck/stages/detect_unbalanced_assignments.lua",
       ["luacheck.stages.detect_uninit_accesses"] = "src/luacheck/stages/detect_uninit_accesses.lua",

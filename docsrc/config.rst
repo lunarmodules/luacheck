@@ -42,6 +42,7 @@ Option                        Type                                     Default v
 ``read_globals``              Array of strings or field definition map ``{}``
 ``new_read_globals``          Array of strings or field definition map (Do not overwrite)
 ``not_globals``               Array of strings                         ``{}``
+``operators``                 Array of strings                         ``{}``
 ``compat``                    Boolean                                  ``false``
 ``allow_defined``             Boolean                                  ``false``
 ``allow_defined_top``         Boolean                                  ``false``
@@ -191,5 +192,8 @@ Default per-path std overrides
    files["**/tests/**/*_spec.lua"].std = "+busted"
    files["**/*.rockspec"].std = "+rockspec"
    files["**/*.luacheckrc"].std = "+luacheckrc"
+   files["**/config.ld"].std = "+ldoc"
 
+These are added to the global ``std`` specified in the config file.
 Each of these can be overriden by setting a different ``std`` value for the corresponding key in ``files``.
+Setting ``std`` on the commandline removes these default overrides.
