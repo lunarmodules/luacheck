@@ -88,7 +88,13 @@ Option                                  Meaning
                                         * ``luacheckrc`` - globals allowed in Luacheck configs, by default added for files ending with ``.luacheckrc``;
                                         * ``ldoc`` - globals allowed in LDoc config, by default added for files named ``config.ld``;
                                         * ``sile`` - globals allowed in The SILE Typesetter and its package ecosystem;
+                                        * ``redis5`` - globals available in `redis lua <https://redis.io/docs/latest/develop/interact/programmability/lua-api/>` v5, including standard Lua 5.1 globals;
+                                        * ``redis6`` - globals available in redis lua v6, including standard Lua 5.1 globals;
+                                        * ``redis7`` - globals available in redis lua v7, including standard Lua 5.1 globals;
+                                        * ``redis_scripting`` - globals added by redis scripting;
+                                        * ``redis_functions`` - globals added by redis functions;
                                         * ``none`` - no standard globals.
+                                    
 
                                         See :ref:`stds`
 ``--globals [<name>] ...``              Add custom global variables or fields on top of standard ones. See :ref:`fields`
