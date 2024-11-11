@@ -1,5 +1,7 @@
 -- Luanti Lua API standard
 -- API reference: https://github.com/minetest/minetest/blob/master/doc/lua_api.md
+-- Changelog: https://dev.minetest.net/Changelog
+-- Current version of this standard: 5.10.0
 local standards = require "luacheck.standards"
 
 local empty = {}
@@ -16,6 +18,7 @@ local core = {
         get_game_info = empty,
         get_worldpath = empty,
         is_singleplayer = empty,
+        is_valid_player_name = empty,
         features = open_table,
         has_feature = empty,
         get_player_information = empty,
@@ -30,8 +33,10 @@ local core = {
         sha1 = empty,
         colorspec_to_colorstring = empty,
         colorspec_to_bytes = empty,
+        colorspec_to_table = empty,
         encode_png = empty,
         urlencode = empty,
+        time_to_day_night_ratio = empty,
 
         -- Logging
         debug = empty,
@@ -167,6 +172,7 @@ local core = {
         set_node = empty,
         add_node = empty,
         bulk_set_node = empty,
+        bulk_swap_node = empty,
         swap_node = empty,
         remove_node = empty,
         get_node = empty,
@@ -395,6 +401,12 @@ local core = {
         get_translated_string = empty,
         translate = empty,
 
+        -- IPC
+        ipc_set = empty,
+        ipc_get = empty,
+        ipc_cas = empty,
+        ipc_poll = empty,
+
         -- Global tables
         registered_items = open_table,
         registered_nodes = open_table,
@@ -430,7 +442,7 @@ local core = {
 }
 
 -- Table additions
-local table = standards.def_fields("copy", "indexof", "insert_all", "key_value_swap", "shuffle")
+local table = standards.def_fields("copy", "indexof", "insert_all", "key_value_swap", "shuffle", "keyof")
 
 -- String additions
 local string = standards.def_fields("split", "trim")
@@ -445,7 +457,8 @@ local bit = standards.def_fields("tobit","tohex","bnot","band","bor","bxor","lsh
 -- vector util
 local vector = standards.def_fields("new", "zero", "copy", "from_string", "to_string", "direction", "distance",
     "length", "normalize", "floor", "round", "apply", "combine", "equals", "sort", "angle", "dot", "cross", "offset",
-    "check", "in_area", "add", "subtract", "multiply", "divide", "rotate", "rotate_around_axis", "dir_to_rotation")
+    "check", "in_area", "add", "subtract", "multiply", "divide", "rotate", "rotate_around_axis", "dir_to_rotation",
+    "ceil", "sign", "abs", "random_in_area", "random_direction")
 
 return {
     read_globals = {
