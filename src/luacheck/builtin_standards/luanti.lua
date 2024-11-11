@@ -1,5 +1,5 @@
--- minetest lua api standard
--- lua-api reference: https://github.com/minetest/minetest/blob/master/doc/lua_api.md
+-- Luanti Lua API standard
+-- API reference: https://github.com/minetest/minetest/blob/master/doc/lua_api.md
 local standards = require "luacheck.standards"
 
 local empty = {}
@@ -7,7 +7,7 @@ local read_write = {read_only = false}
 local open_table = {read_only = false, other_fields = true}
 
 -- main namespace
-local minetest = {
+local core = {
     fields = {
         -- Utilities
         get_current_modname = empty,
@@ -450,7 +450,9 @@ local vector = standards.def_fields("new", "zero", "copy", "from_string", "to_st
 return {
     read_globals = {
         -- main namespace
-        minetest = minetest,
+        core = core,
+        -- compatibility alias
+        minetest = core,
 
         -- extensions
         table = table,

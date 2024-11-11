@@ -1,5 +1,5 @@
 local love = require "luacheck.builtin_standards.love"
-local minetest = require "luacheck.builtin_standards.minetest"
+local luanti = require "luacheck.builtin_standards.luanti"
 local playdate = require "luacheck.builtin_standards.playdate"
 local ngx = require "luacheck.builtin_standards.ngx"
 local standards = require "luacheck.standards"
@@ -297,7 +297,9 @@ builtin_standards.busted = {
 
 builtin_standards.love = love
 
-builtin_standards.minetest = minetest
+builtin_standards.luanti = luanti
+-- Minetest was renamed to Luanti. Keep an alias for compatibility.
+builtin_standards.minetest = luanti
 
 builtin_standards.playdate = playdate
 

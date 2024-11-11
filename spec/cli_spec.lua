@@ -1242,7 +1242,7 @@ Checking spec/samples/globals.lua                 2 warnings
 Checking spec/samples/indirect_globals.lua        3 warnings
 Checking spec/samples/inline_options.lua          7 warnings / 2 errors
 Checking spec/samples/line_length.lua             8 warnings
-Checking spec/samples/minetest.lua                2 warnings
+Checking spec/samples/luanti.lua                  2 warnings
 Checking spec/samples/python_code.lua             1 error
 Checking spec/samples/read_globals.lua            5 warnings
 Checking spec/samples/read_globals_inline_options.lua 3 warnings
@@ -1269,7 +1269,7 @@ Checking globals.lua                              2 warnings
 Checking indirect_globals.lua                     3 warnings
 Checking inline_options.lua                       7 warnings / 2 errors
 Checking line_length.lua                          8 warnings
-Checking minetest.lua                             2 warnings
+Checking luanti.lua                               2 warnings
 Checking python_code.lua                          1 error
 Checking read_globals.lua                         5 warnings
 Checking read_globals_inline_options.lua          3 warnings
@@ -1295,7 +1295,7 @@ Checking globals.lua                              2 warnings
 Checking indirect_globals.lua                     3 warnings
 Checking inline_options.lua                       7 warnings / 2 errors
 Checking line_length.lua                          8 warnings
-Checking minetest.lua                             2 warnings
+Checking luanti.lua                               2 warnings
 Checking python_code.lua                          1 error
 Checking redefined.lua                            7 warnings
 Checking reversed_fornum.lua                      1 warning
@@ -1355,13 +1355,16 @@ Total: 1 warning / 0 errors in 1 file
          end)
 
          describe("responds to builtin std preset", function()
-            it("minetest", function()
-               -- make sure minetest sample has something that normally throws a lint error
-               assert.equal(1, get_exitcode "spec/samples/minetest.lua --no-config")
-               -- turning on minetest std should pass all lints
-               assert.equal(0, get_exitcode "spec/samples/minetest.lua --no-config --std minetest")
-               -- confirm minetest std set isn't just blindly allowing anything
-               assert.equal(1, get_exitcode "spec/samples/sample.rockspec --no-config --std minetest")
+            it("luanti", function()
+               -- make sure luanti sample has something that normally throws a lint error
+               assert.equal(1, get_exitcode "spec/samples/luanti.lua --no-config")
+               -- test both the new "luanti" std name and the "minetest" compatibility alias
+               for _, std_name in ipairs {"luanti", "minetest"} do
+	               -- turning on luanti std should pass all lints
+	               assert.equal(0, get_exitcode("spec/samples/luanti.lua --no-config --std " .. std_name))
+	               -- confirm luanti std set isn't just blindly allowing anything
+	               assert.equal(1, get_exitcode("spec/samples/sample.rockspec --no-config --std " .. std_name))
+	           end
             end)
          end)
 
