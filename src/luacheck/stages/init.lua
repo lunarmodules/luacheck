@@ -15,6 +15,7 @@ stages.names = {
    "parse_inline_options",
    "name_functions",
    "resolve_locals",
+   "check_table_fields",
    "detect_bad_whitespace",
    "detect_compound_operators",
    "detect_cyclomatic_complexity",
