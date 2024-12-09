@@ -821,10 +821,16 @@ statements["local"] = function(state)
       lhs[#lhs + 1] = parse_id(state)
 
       -- Check if a Lua 5.4 attribute is present
+      -- TODO: Warn on different syntax between lua versions?
       if state.token == "<" then
-         -- For now, just consume and ignore it.
          skip_token(state)
-         check_name(state)
+         local attribute = check_name(state)
+         if attribute == "const" then
+            lhs[#lhs].const = true
+         -- Accept but ignore close
+         elseif attribute ~= "close" then
+            parser.syntax_error("Unknown attribute '" .. attribute .. "'", state)
+         end
          skip_token(state)
          check_and_skip_token(state, ">")
       end

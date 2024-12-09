@@ -492,14 +492,14 @@ describe("parser", function()
          )
       end)
 
-      it("accepts (and ignores for now) Lua 5.4 attributes", function()
+      it("accepts Lua 5.4 attributes, ignoring close and parsing const", function()
          assert.same({tag = "Local", {
                            {tag = "Id", "a"}
                         }
                      }, get_node("local a <close>"))
          assert.same({tag = "Local", {
                            {tag = "Id", "a"},
-                           {tag = "Id", "b"}
+                           {tag = "Id", const = true, "b"}
                         }
                      }, get_node("local a <close>, b <const>"))
          assert.same({
@@ -512,7 +512,7 @@ describe("parser", function()
          assert.same({
             tag = "Local", {
                {tag = "Id", "a"},
-               {tag = "Id", "b"}
+               {tag = "Id", const = true, "b"}
          }, {
                {tag = "Id", "c"},
                {tag = "Id", "d"}
@@ -521,6 +521,14 @@ describe("parser", function()
          assert.same(
             {line = 1, offset = 16, end_offset = 16, msg = "expected '>' near '='"},
             get_error("local a <close = ")
+         )
+         assert.same(
+            {line = 1, offset = 10, end_offset = 13, msg = "Unknown attribute 'cons'"},
+            get_error("local a <cons = ")
+         )
+         assert.same(
+            {line = 1, offset = 18, end_offset = 18, msg = "expected '(' near '<'"},
+            get_error("local function y <const> () end")
          )
       end)
 

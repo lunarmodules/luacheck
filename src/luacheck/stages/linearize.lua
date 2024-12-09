@@ -20,6 +20,10 @@ stage.warnings = {
    ["431"] = redefined_warning("shadowing upvalue {name!} on line {prev_line}"),
    ["432"] = redefined_warning("shadowing upvalue argument {name!} on line {prev_line}"),
    ["433"] = redefined_warning("shadowing upvalue loop variable {name!} on line {prev_line}"),
+   ["441"] = {
+      message_format = "variable {name!} was defined as const on line {defined_line}",
+      fields = {"name", "defined_line"}
+   },
    ["521"] = {message_format = "unused label {label!}", fields = {"label"}}
 }
 
@@ -39,6 +43,13 @@ local function warn_redefined(chstate, var, prev_var, is_same_scope)
       prev_line = prev_var.node.line,
       prev_column = chstate:offset_to_column(prev_var.node.line, prev_var.node.offset),
       prev_end_column = chstate:offset_to_column(prev_var.node.line, prev_var.node.end_offset)
+   })
+end
+
+local function warn_modified_const_label(chstate, node, var)
+   chstate:warn_range("441", node, {
+      defined_line = var.node.line,
+      name = var.name
    })
 end
 
@@ -518,6 +529,10 @@ function LinState:emit_stmt_Set(node)
 
          if var then
             self:register_upvalue_action(item, var, "set_upvalues")
+
+            if var.node.const then
+               warn_modified_const_label(self.chstate, node, var)
+            end
          end
       else
          assert(expr.tag == "Index")
