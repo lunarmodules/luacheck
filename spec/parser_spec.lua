@@ -242,7 +242,7 @@ describe("parser", function()
    describe("when parsing for", function()
       it("parses fornum correctly", function()
          assert.same({tag = "Fornum",
-                        {tag = "Id", "i"},
+                        {tag = "Id", const_loop_var = true, "i"},
                         {tag = "Number", "1"},
                         {tag = "Op", "len", {tag = "Id", "t"}},
                         {}
@@ -283,7 +283,7 @@ describe("parser", function()
 
       it("parses fornum with step correctly", function()
          assert.same({tag = "Fornum",
-                        {tag = "Id", "i"},
+                        {tag = "Id", const_loop_var = true, "i"},
                         {tag = "Number", "1"},
                         {tag = "Op", "len", {tag = "Id", "t"}},
                         {tag = "Number", "2"},
@@ -297,14 +297,14 @@ describe("parser", function()
 
       it("parses forin correctly", function()
          assert.same({tag = "Forin", {
-                           {tag = "Id", "i"}
+                           {tag = "Id", const_loop_var = true, "i"}
                         }, {
                            {tag = "Id", "t"}
                         },
                         {}
                      }, get_node("for i in t do end"))
          assert.same({tag = "Forin", {
-                           {tag = "Id", "i"},
+                           {tag = "Id", const_loop_var = true, "i"},
                            {tag = "Id", "j"}
                         }, {
                            {tag = "Id", "t"},
@@ -987,7 +987,7 @@ describe("parser", function()
             },
             {tag = "Do",
                {tag = "Fornum",
-                  {tag = "Id", "i"},
+                  {tag = "Id", const_loop_var = true, "i"},
                   {tag = "Number", "1"},
                   {tag = "Number", "2"},
                   {
@@ -998,7 +998,7 @@ describe("parser", function()
                },
                {tag = "Forin",
                   {
-                     {tag = "Id", "k"},
+                     {tag = "Id", const_loop_var = true, "k"},
                      {tag = "Id", "v"}
                   },
                   {

@@ -24,6 +24,11 @@ stage.warnings = {
       message_format = "variable {name!} was defined as const on line {defined_line}",
       fields = {"name", "defined_line"}
    },
+   ["442"] = {
+      message_format =
+         "variable {name!}, defined on line {defined_line}, is a loop control variable and shouldn't be modified",
+      fields = {"name", "defined_line"}
+   },
    ["521"] = {message_format = "unused label {label!}", fields = {"label"}}
 }
 
@@ -47,7 +52,8 @@ local function warn_redefined(chstate, var, prev_var, is_same_scope)
 end
 
 local function warn_modified_const_label(chstate, node, var)
-   chstate:warn_range("441", node, {
+   local code = "44" .. (var.node.const and "1" or "2")
+   chstate:warn_range(code, node, {
       defined_line = var.node.line,
       name = var.name
    })
@@ -531,6 +537,10 @@ function LinState:emit_stmt_Set(node)
             self:register_upvalue_action(item, var, "set_upvalues")
 
             if var.node.const then
+               warn_modified_const_label(self.chstate, node, var)
+            end
+
+            if var.node.const_loop_var then
                warn_modified_const_label(self.chstate, node, var)
             end
          end

@@ -478,4 +478,23 @@ a, b = 3, 3
 print(a, b)
 ]]))
    end)
+
+   it("handles loop control variables correctly", function()
+      assert.same({
+         {code = "442", line = 2, column = 3, end_column = 11, name = 'i',
+            defined_line = 1},
+         {code = "442", line = 7, column = 3, end_column = 13, name = 'k',
+            defined_line = 6},
+      }, helper.get_stage_warnings("linearize", [[
+for i = 1, 10 do
+  i = i - 1
+  print(i)
+end
+
+for k,_ in pairs({ foo = "bar" }) do
+  k = "k:"..k
+  print(k)
+end
+]]))
+   end)
 end)
