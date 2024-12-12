@@ -416,6 +416,36 @@ function ClosureState:handle_local_or_set_item(item)
    end
 end
 
+function ClosureState:handle_op_set(item)
+   self:check_for_function_calls(item.node)
+
+   -- By assumption, OpSet only supports a single item on the lhs/rhs
+   local lhs_node = item.lhs[1]
+   local rhs_node = item.rhs[1]
+
+   -- Only way OpSet can be relevant to tables is $table[key] += val or the like
+   if lhs_node.tag == "Index" then
+      local base_node, key_node = lhs_node[1], lhs_node[2]
+
+      -- Always accesses the lhs before writing to it
+      self:detect_accesses({lhs_node})
+
+      -- Case: $var[$existing_table[key]] = value
+      -- Need to pass in a new array rather than using lhs_node, because that would
+      -- mark the base *set* as also being an access
+      self:detect_accesses({key_node})
+
+      -- Deliberately don't continue down indexes- $table[key1][key2] isn't a new set of key1
+      if base_node.tag == "Id" then
+         -- Might not have a var if it's a global
+         local lhs_table_name = base_node.var and base_node.var.name
+         if self.current_tables[lhs_table_name] then
+            self:set_key(lhs_table_name, key_node, rhs_node, false)
+         end
+      end
+   end
+end
+
 function ClosureState:handle_eval(item)
    self:check_for_function_calls(item.node)
    self:detect_accesses({item.node})
@@ -438,7 +468,7 @@ local item_callbacks = {
    Eval = ClosureState.handle_eval,
    Local = ClosureState.handle_local_or_set_item,
    Set = ClosureState.handle_local_or_set_item,
-   OpSet = ClosureState.handle_local_or_set_item,
+   OpSet = ClosureState.handle_op_set,
 }
 
 -- Steps through the closure one item at a time
