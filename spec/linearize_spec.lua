@@ -404,3 +404,97 @@ g, a = f()]]))
       end)
    end)
 end)
+
+describe("constant modification detection", function()
+   it("detects modified constants", function()
+      assert.same({
+         {code = "441", line = 4, column = 1, end_column = 17, defined_line = 1, name = 'b'}
+      }, helper.get_stage_warnings("linearize", [[
+local a, b <const>, c = 1, 1, 1
+print(a, b, c)
+
+a, b, c = 2, 2, 2
+print(a, b, c)
+]]))
+   end)
+
+   it("detects a constant overwritten by a function", function()
+      assert.same({
+         {code = "441", line = 4, column = 1, end_column = 16, defined_line = 1, name = 'a'}
+      }, helper.get_stage_warnings("linearize", [[
+local a <const> = 1
+print(a)
+
+function a() end
+a()
+]]))
+   end)
+
+   it("doesn't trigger on a constant redefinition", function()
+      assert.same({
+         {code = "411", line = 4, column = 7, end_column = 7, name = 'a',
+            prev_column = 7, prev_end_column = 7, prev_line = 1}
+      }, helper.get_stage_warnings("linearize", [[
+local a <const> = 1
+print(a)
+
+local a = 1
+print(a)
+]]))
+   end)
+
+   it("doesn't trigger on a loop overriding a constant", function()
+      assert.same({
+         {code = "421", line = 4, column = 5, end_column = 5, name = 'a',
+            prev_column = 7, prev_end_column = 7, prev_line = 1}
+      }, helper.get_stage_warnings("linearize", [[
+local a <const> = 1
+print(a)
+
+for a = 1,10 do
+   print(a)
+end
+]]))
+   end)
+
+   it("handles variable scoping correctly", function()
+      assert.same({
+         {code = "421", line = 5, column = 10, end_column = 10, name = 'a',
+            prev_column = 7, prev_end_column = 7, prev_line = 1},
+         {code = "421", line = 5, column = 13, end_column = 13, name = 'b',
+            prev_column = 18, prev_end_column = 18, prev_line = 1},
+         {code = "441", line = 9, column = 1, end_column = 11, name = 'a',
+            defined_line = 1}
+      }, helper.get_stage_warnings("linearize", [[
+local a <const>, b = 1, 1
+print(a, b)
+
+do
+   local a, b <const> = 2, 2
+   print(a, b)
+end
+
+a, b = 3, 3
+print(a, b)
+]]))
+   end)
+
+   it("handles loop control variables correctly", function()
+      assert.same({
+         {code = "442", line = 2, column = 3, end_column = 11, name = 'i',
+            defined_line = 1},
+         {code = "442", line = 7, column = 3, end_column = 13, name = 'k',
+            defined_line = 6},
+      }, helper.get_stage_warnings("linearize", [[
+for i = 1, 10 do
+  i = i - 1
+  print(i)
+end
+
+for k,_ in pairs({ foo = "bar" }) do
+  k = "k:"..k
+  print(k)
+end
+]]))
+   end)
+end)

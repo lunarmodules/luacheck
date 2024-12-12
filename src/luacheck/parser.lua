@@ -719,14 +719,15 @@ statements["for"] = function(state)
 
    local ast_node = {}
    local tag
-   local first_var = parse_id(state)
+   local control_var = parse_id(state)
+   control_var.const_loop_var = true
 
    if state.token == "=" then
       -- Numeric "for" loop.
       tag = "Fornum"
       -- Skip "=".
       skip_token(state)
-      ast_node[1] = first_var
+      ast_node[1] = control_var
       ast_node[2] = parse_expression(state)
       check_and_skip_token(state, ",")
       ast_node[3] = parse_expression(state)
@@ -741,7 +742,7 @@ statements["for"] = function(state)
       -- Generic "for" loop.
       tag = "Forin"
 
-      local iter_vars = {first_var}
+      local iter_vars = {control_var}
       while test_and_skip_token(state, ",") do
          iter_vars[#iter_vars + 1] = parse_id(state)
       end
@@ -821,10 +822,16 @@ statements["local"] = function(state)
       lhs[#lhs + 1] = parse_id(state)
 
       -- Check if a Lua 5.4 attribute is present
+      -- TODO: Warn on different syntax between lua versions?
       if state.token == "<" then
-         -- For now, just consume and ignore it.
          skip_token(state)
-         check_name(state)
+         local attribute = check_name(state)
+         if attribute == "const" then
+            lhs[#lhs].const = true
+         -- Accept but ignore close
+         elseif attribute ~= "close" then
+            parser.syntax_error("Unknown attribute '" .. attribute .. "'", state)
+         end
          skip_token(state)
          check_and_skip_token(state, ">")
       end

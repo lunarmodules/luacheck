@@ -44,6 +44,8 @@ Code Description
 431  Shadowing an upvalue.
 432  Shadowing an upvalue argument.
 433  Shadowing an upvalue loop variable.
+441  Constant local variable is modified.
+442  Loop control variable is modified.
 511  Unreachable code.
 512  Loop can be executed at most once.
 521  Unused label.
