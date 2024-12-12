@@ -768,18 +768,19 @@ Total: 8 warnings / 3 errors in 2 files
 
    it("shows correct ranges for files with utf8", function()
       assert.equal([[
-Checking spec/samples/utf8.lua                    4 warnings
+Checking spec/samples/utf8.lua                    5 warnings
 
     spec/samples/utf8.lua:2:1-4: setting undefined field '분야 명' of global 'math'
     spec/samples/utf8.lua:2:16-19: accessing undefined field '値' of global 'math'
     spec/samples/utf8.lua:3:25-25: unused variable 't'
     spec/samples/utf8.lua:4:5-28: value assigned to field 'päällekkäinen nimi a\u{200B}b' is overwritten on line 5 before use
+    spec/samples/utf8.lua:5:5-28: value assigned to table field 't'.'päällekkäinen nimi a​b' is unused
 
 Checking spec/samples/utf8_error.lua              1 error
 
     spec/samples/utf8_error.lua:2:11-11: expected statement near 'о'
 
-Total: 4 warnings / 1 error in 2 files
+Total: 5 warnings / 1 error in 2 files
 ]], get_output "spec/samples/utf8.lua spec/samples/utf8_error.lua --ranges --no-config")
    end)
 
@@ -1250,10 +1251,10 @@ Checking spec/samples/redefined.lua               7 warnings
 Checking spec/samples/reversed_fornum.lua         1 warning
 Checking spec/samples/unused_code.lua             10 warnings
 Checking spec/samples/unused_secondaries.lua      4 warnings
-Checking spec/samples/utf8.lua                    4 warnings
+Checking spec/samples/utf8.lua                    5 warnings
 Checking spec/samples/utf8_error.lua              1 error
 
-Total: 75 warnings / 9 errors in 21 files
+Total: 76 warnings / 9 errors in 21 files
 ]]):gsub("(spec/samples)/", "%1"..package.config:sub(1, 1)),
             get_output "spec/samples --config=spec/configs/exclude_files_config.luacheckrc -qq --exclude-files spec/samples/global_fields.lua")
          end)
@@ -1277,10 +1278,10 @@ Checking redefined.lua                            7 warnings
 Checking reversed_fornum.lua                      1 warning
 Checking unused_code.lua                          10 warnings
 Checking unused_secondaries.lua                   4 warnings
-Checking utf8.lua                                 4 warnings
+Checking utf8.lua                                 5 warnings
 Checking utf8_error.lua                           1 error
 
-Total: 75 warnings / 9 errors in 21 files
+Total: 76 warnings / 9 errors in 21 files
 ]], get_output(". --config=spec/configs/exclude_files_config.luacheckrc -qq --exclude-files global_fields.lua", "spec/samples/"))
          end)
 
@@ -1301,10 +1302,10 @@ Checking redefined.lua                            7 warnings
 Checking reversed_fornum.lua                      1 warning
 Checking unused_code.lua                          10 warnings
 Checking unused_secondaries.lua                   4 warnings
-Checking utf8.lua                                 4 warnings
+Checking utf8.lua                                 5 warnings
 Checking utf8_error.lua                           1 error
 
-Total: 67 warnings / 9 errors in 19 files
+Total: 68 warnings / 9 errors in 19 files
 ]], get_output(". --config=spec/configs/exclude_files_config.luacheckrc -qq --exclude-files global_fields.lua --exclude-files " .. quote("./read*"), "spec/samples/"))
          end)
 
