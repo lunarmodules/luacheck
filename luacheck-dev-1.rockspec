@@ -28,7 +28,8 @@ description = {
 dependencies = {
    "lua >= 5.1",
    "argparse >= 0.6.0",
-   "luafilesystem >= 1.6.3"
+   "luafilesystem >= 1.6.3",
+   "dkjson >= 2.1.0"
 }
 
 test_dependencies = {
