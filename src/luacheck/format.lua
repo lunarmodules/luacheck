@@ -318,13 +318,14 @@ function format.builtin_formatters.plain(report, file_names, opts)
    return table.concat(buf, "\n")
 end
 
+-- https://docs.github.com/en/code-security/code-scanning/integrating-with-code-scanning/sarif-support-for-code-scanning
 function format.builtin_formatters.Sarif(report, file_names, opts)
    opts.color = false
    local get_level = function(event)
        return event.code:sub(1, 1) == "0" and "error" or "warning"
    end
 
-   -- SARIF support for code scanning: https://docs.github.com/en/code-security/code-scanning/integrating-with-code-scanning/sarif-support-for-code-scanning
+   -- SARIF support for GitHub code scanning
    local sarif_output = {
        ["$schema"] = "https://json.schemastore.org/sarif-2.1.0.json",
        version = "2.1.0",
