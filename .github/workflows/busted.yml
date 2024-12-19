@@ -28,7 +28,7 @@ jobs:
           luarocks install busted
           luarocks install lanes # required for parallel execution
           luarocks install luautf8 # required for decoder unit test
-          luarocks install dkjson  # required for decoder unit test
+          luarocks install dkjson # required for decoder unit test
           luarocks install luasocket # required for profiler unit test
           luarocks install luacov-coveralls
 

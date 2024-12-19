@@ -1,6 +1,6 @@
 local json  = require "dkjson"
 local stages = require "luacheck.stages"
-local utils  = require "luacheck.utils"
+local utils = require "luacheck.utils"
 
 local format = {}
 
