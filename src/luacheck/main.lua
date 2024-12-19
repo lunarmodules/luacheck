@@ -244,6 +244,7 @@ Links:
       parser:option("--formatter" , "Use custom formatter. <formatter> must be a module name or one of:\n" ..
          "   TAP - Test Anything Protocol formatter;\n" ..
          "   JUnit - JUnit XML formatter;\n" ..
+         "   Sarif - Static Analysis Results Interchange Format formatter;\n" ..
          "   visual_studio - MSBuild/Visual Studio aware formatter;\n" ..
          "   plain - simple warning-per-line formatter;\n" ..
          "   default - standard formatter."),
