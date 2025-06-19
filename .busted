@@ -1,5 +1,6 @@
 return {
    _all = {
-      ["exclude-pattern"] = "sample_spec"
+      ["exclude-pattern"] = "sample_spec",
+      helper = "./spec/preload.lua"
    }
 }
