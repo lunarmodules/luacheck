@@ -32,4 +32,4 @@ jobs:
           luarocks install luacov-coveralls
 
       - name: Run regression tests
-        run: busted -v
+        run: busted -c -v
