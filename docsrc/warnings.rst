@@ -62,6 +62,7 @@ Code Description
 614  Trailing whitespace in a comment.
 621  Inconsistent indentation (``SPACE`` followed by ``TAB``).
 631  Line is too long.
+641  A line contains multiple statements.
 ==== =============================================================================
 
 Global variables (1xx)
