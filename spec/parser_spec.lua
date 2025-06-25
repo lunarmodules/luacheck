@@ -242,7 +242,7 @@ describe("parser", function()
    describe("when parsing for", function()
       it("parses fornum correctly", function()
          assert.same({tag = "Fornum",
-                        {tag = "Id", "i"},
+                        {tag = "Id", const_loop_var = true, "i"},
                         {tag = "Number", "1"},
                         {tag = "Op", "len", {tag = "Id", "t"}},
                         {}
@@ -283,7 +283,7 @@ describe("parser", function()
 
       it("parses fornum with step correctly", function()
          assert.same({tag = "Fornum",
-                        {tag = "Id", "i"},
+                        {tag = "Id", const_loop_var = true, "i"},
                         {tag = "Number", "1"},
                         {tag = "Op", "len", {tag = "Id", "t"}},
                         {tag = "Number", "2"},
@@ -297,14 +297,14 @@ describe("parser", function()
 
       it("parses forin correctly", function()
          assert.same({tag = "Forin", {
-                           {tag = "Id", "i"}
+                           {tag = "Id", const_loop_var = true, "i"}
                         }, {
                            {tag = "Id", "t"}
                         },
                         {}
                      }, get_node("for i in t do end"))
          assert.same({tag = "Forin", {
-                           {tag = "Id", "i"},
+                           {tag = "Id", const_loop_var = true, "i"},
                            {tag = "Id", "j"}
                         }, {
                            {tag = "Id", "t"},
@@ -492,14 +492,14 @@ describe("parser", function()
          )
       end)
 
-      it("accepts (and ignores for now) Lua 5.4 attributes", function()
+      it("accepts Lua 5.4 attributes, ignoring close and parsing const", function()
          assert.same({tag = "Local", {
                            {tag = "Id", "a"}
                         }
                      }, get_node("local a <close>"))
          assert.same({tag = "Local", {
                            {tag = "Id", "a"},
-                           {tag = "Id", "b"}
+                           {tag = "Id", const = true, "b"}
                         }
                      }, get_node("local a <close>, b <const>"))
          assert.same({
@@ -512,7 +512,7 @@ describe("parser", function()
          assert.same({
             tag = "Local", {
                {tag = "Id", "a"},
-               {tag = "Id", "b"}
+               {tag = "Id", const = true, "b"}
          }, {
                {tag = "Id", "c"},
                {tag = "Id", "d"}
@@ -521,6 +521,14 @@ describe("parser", function()
          assert.same(
             {line = 1, offset = 16, end_offset = 16, msg = "expected '>' near '='"},
             get_error("local a <close = ")
+         )
+         assert.same(
+            {line = 1, offset = 10, end_offset = 13, msg = "Unknown attribute 'cons'"},
+            get_error("local a <cons = ")
+         )
+         assert.same(
+            {line = 1, offset = 18, end_offset = 18, msg = "expected '(' near '<'"},
+            get_error("local function y <const> () end")
          )
       end)
 
@@ -979,7 +987,7 @@ describe("parser", function()
             },
             {tag = "Do",
                {tag = "Fornum",
-                  {tag = "Id", "i"},
+                  {tag = "Id", const_loop_var = true, "i"},
                   {tag = "Number", "1"},
                   {tag = "Number", "2"},
                   {
@@ -990,7 +998,7 @@ describe("parser", function()
                },
                {tag = "Forin",
                   {
-                     {tag = "Id", "k"},
+                     {tag = "Id", const_loop_var = true, "k"},
                      {tag = "Id", "v"}
                   },
                   {
