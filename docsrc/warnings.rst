@@ -62,6 +62,7 @@ Code Description
 614  Trailing whitespace in a comment.
 621  Inconsistent indentation (``SPACE`` followed by ``TAB``).
 631  Line is too long.
+701  Useless computed key
 ==== =============================================================================
 
 Global variables (1xx)
@@ -294,3 +295,24 @@ Additionally, separate limits can be set for three different type of lines:
 
 These types of lines are limited using CLI options named ``--[no-]max-string-line-length``, ``--[no-]max-comment-line-length``,
 and ``--[no-]max-code-line-length``, with similar config and inline options.
+
+Style issues (6xx)
+-----------------------
+
+Useless computed key (701)
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+It’s unnecessary to use computed properties with literals such as:
+
+.. code-block:: lua
+   :linenos:
+
+   local foo = {
+      ["a"] = 0, -- bad
+   }
+   foo["a"] -- bad
+
+   local foo = {
+      a = 0, -- good
+   }
+   foo.a -- good
