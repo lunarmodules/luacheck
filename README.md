@@ -93,6 +93,7 @@ There are a few plugins which allow using Luacheck directly inside an editor, sh
 * For Brackets, there is [linter.luacheck](https://github.com/Malcolm3141/brackets-luacheck) extension;
 * For Visual Studio code there is [vscode-luacheck](https://marketplace.visualstudio.com/items?itemName=dwenegar.vscode-luacheck) extension. [vscode-lua](https://marketplace.visualstudio.com/items?itemName=trixnz.vscode-lua) extension also includes Luacheck support;
 * For Nova, search the Extension Library for the [Luacheck](https://github.com/GarrettAlbright/Luacheck.novaextension) extension.
+* For Geany IDE there is [geany luacheck bindings](https://github.com/Yenoxel/gealubi) plugin.
 
 If you are a plugin developer, see [recommended way of using Luacheck in a plugin](http://luacheck.readthedocs.org/en/stable/cli.html#stable-interface-for-editor-plugins-and-tools).
 
