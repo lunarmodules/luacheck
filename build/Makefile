@@ -35,6 +35,8 @@ LFS_A= $(LFS_DIR)/src/lfs.a
 LANES_O= $(patsubst %.c,%.o,$(wildcard $(LANES_DIR)/src/*.c))
 LANES_A= $(LANES_DIR)/src/lanes.a
 
+LUAROCKS?= luarocks
+
 default:	$(TARGET)
 
 $(LUA_DIR):
@@ -47,19 +49,19 @@ $(LFS_DIR):
 	@echo
 	@echo "=== Downloading LuaFileSystem $(LFS_VERSION) ==="
 	@echo
-	luarocks unpack luafilesystem $(LFS_VERSION)
+	$(LUAROCKS) unpack luafilesystem $(LFS_VERSION)
 
 $(ARGPARSE_DIR):
 	@echo
 	@echo "=== Downloading argparse $(ARGPARSE_VERSION) ==="
 	@echo
-	luarocks unpack argparse $(ARGPARSE_VERSION)
+	$(LUAROCKS) unpack argparse $(ARGPARSE_VERSION)
 
 $(LANES_DIR):
 	@echo
 	@echo "=== Downloading Lanes $(LANES_VERSION) ==="
 	@echo
-	luarocks unpack lanes $(LANES_VERSION)
+	$(LUAROCKS) unpack lanes $(LANES_VERSION)
 
 fetch:	$(LUA_DIR) $(LFS_DIR) $(ARGPARSE_DIR) $(LANES_DIR)
 
