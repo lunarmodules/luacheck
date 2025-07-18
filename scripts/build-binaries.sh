@@ -10,9 +10,11 @@ set -o pipefail
 # Should be executed from root Luacheck directory.
 # Resulting binaries will be in `build/bin/`.
 
+: ${MAKE:=make}
+
 cd build
 
-make fetch
+${MAKE} fetch
 
 function build {
     label="$1"
@@ -22,8 +24,8 @@ function build {
     echo "=== Building Luacheck ($label) ==="
     echo
 
-    make clean "$@"
-    make "-j$(nproc)" "$@"
+    ${MAKE} clean "$@"
+    ${MAKE} "-j$(nproc)" "$@"
 }
 
 build "Linux x86-64" LINUX=1
