@@ -1,3 +1,4 @@
+local json = require "dkjson"
 local utils = require "luacheck.utils"
 local multithreading = require "luacheck.multithreading"
 local helper = require "spec.helper"
@@ -977,6 +978,15 @@ not ok 8 spec/samples/python_code.lua:1:6: (E011) expected '=' near '__future__'
     </testcase>
 </testsuite>
 ]], get_output "bad_file spec/samples/good_code.lua spec/samples/bad_code.lua spec/samples/python_code.lua --std=lua52 --formatter JUnit --no-config")
+   end)
+
+   it("has built-in Sarif formatter", function()
+      -- luacheck: ignore 631
+      local expect = [[
+{"runs":[{"tool":{"driver":{"version":"1.0.0","name":"luacheck","informationUri":"https://github.com/lunarmodules/luacheck"}},"results":[{"locations":[{"physicalLocation":{"artifactLocation":{"uri":"bad_file"}}}],"ruleId":"I/O error","level":"error","message":{"text":"luacheck : fatal error F1: couldn't check bad_file: couldn't read: No such file or directory"}},{"locations":[{"physicalLocation":{"region":{"startLine":3,"startColumn":16},"artifactLocation":{"uri":"spec/samples/bad_code.lua"}}}],"ruleId":"W211","level":"warning","message":{"text":"spec/samples/bad_code.lua:3:16: unused function 'helper'"}},{"locations":[{"physicalLocation":{"region":{"startLine":3,"startColumn":23},"artifactLocation":{"uri":"spec/samples/bad_code.lua"}}}],"ruleId":"W212","level":"warning","message":{"text":"spec/samples/bad_code.lua:3:23: unused variable length argument"}},{"locations":[{"physicalLocation":{"region":{"startLine":7,"startColumn":10},"artifactLocation":{"uri":"spec/samples/bad_code.lua"}}}],"ruleId":"W111","level":"warning","message":{"text":"spec/samples/bad_code.lua:7:10: setting non-standard global variable 'embrace'"}},{"locations":[{"physicalLocation":{"region":{"startLine":8,"startColumn":10},"artifactLocation":{"uri":"spec/samples/bad_code.lua"}}}],"ruleId":"W412","level":"warning","message":{"text":"spec/samples/bad_code.lua:8:10: variable 'opt' was previously defined as an argument on line 7"}},{"locations":[{"physicalLocation":{"region":{"startLine":9,"startColumn":11},"artifactLocation":{"uri":"spec/samples/bad_code.lua"}}}],"ruleId":"W113","level":"warning","message":{"text":"spec/samples/bad_code.lua:9:11: accessing undefined variable 'hepler'"}},{"locations":[{"physicalLocation":{"region":{"startLine":1,"startColumn":6},"artifactLocation":{"uri":"spec/samples/python_code.lua"}}}],"ruleId":"E011","level":"error","message":{"text":"spec/samples/python_code.lua:1:6: expected '=' near '__future__'"}}]}],"version":"2.1.0","$schema":"https://json.schemastore.org/sarif-2.1.0.json"}
+]]
+      local actual = get_output "bad_file spec/samples/good_code.lua spec/samples/bad_code.lua spec/samples/python_code.lua --std=lua52 --formatter Sarif --no-config"
+      assert.same(json.decode(expect), json.decode(actual))
    end)
 
    it("has built-in Visual Studio aware formatter", function()
