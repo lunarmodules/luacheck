@@ -43,6 +43,7 @@ Option                        Type                                     Default v
 ``new_read_globals``          Array of strings or field definition map (Do not overwrite)
 ``not_globals``               Array of strings                         ``{}``
 ``operators``                 Array of strings                         ``{}``
+``const_loop_control_vars``   Boolean                                  ``false``
 ``compat``                    Boolean                                  ``false``
 ``allow_defined``             Boolean                                  ``false``
 ``allow_defined_top``         Boolean                                  ``false``
