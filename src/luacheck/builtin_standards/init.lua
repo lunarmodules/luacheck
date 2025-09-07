@@ -31,6 +31,7 @@ string_defs.lua51 = add_defs(string_defs.min, standards.def_fields("gfind"))
 string_defs.lua52 = string_defs.min
 string_defs.lua53 = add_defs(string_defs.min, standards.def_fields("pack", "packsize", "unpack"))
 string_defs.lua54 = string_defs.lua53
+string_defs.lua55 = string_defs.lua54
 string_defs.luajit = string_defs.lua51
 
 local file_defs = {}
@@ -54,6 +55,7 @@ file_defs.lua51 = file_defs.min
 file_defs.lua52 = file_defs.min
 file_defs.lua53 = add_defs(file_defs.min, {fields = {__name = string_defs.lua53}})
 file_defs.lua54 = add_defs(file_defs.min, {fields = {__name = string_defs.lua54}})
+file_defs.lua55 = file_defs.lua54
 file_defs.luajit = file_defs.min
 
 local function make_min_def(method_defs)
@@ -237,6 +239,16 @@ lua_defs.lua54c = add_defs(lua_defs.lua54, {
       math = standards.def_fields("atan2", "cosh", "frexp", "ldexp", "log10", "pow", "sinh", "tanh")
    }
 })
+lua_defs.lua55 = add_defs(lua_defs.lua54, {
+   fields = {
+      table = standards.def_fields("create")
+   }
+})
+lua_defs.lua55c = add_defs(lua_defs.lua55, {
+   fields = {
+      math = standards.def_fields("atan2", "cosh", "frexp", "ldexp", "log10", "pow", "sinh", "tanh")
+   }
+})
 lua_defs.luajit = add_defs(make_min_def("luajit"), {
    fields = {
       bit = standards.def_fields("arshift", "band", "bnot", "bor", "bswap", "bxor", "lshift", "rol", "ror",
@@ -263,7 +275,14 @@ lua_defs.luajit = add_defs(make_min_def("luajit"), {
    }
 })
 lua_defs.ngx_lua = add_defs(lua_defs.luajit, ngx)
-lua_defs.max = add_defs(lua_defs.lua51c, lua_defs.lua52c, lua_defs.lua53c, lua_defs.lua54c, lua_defs.luajit)
+lua_defs.max = add_defs(
+   lua_defs.lua51c,
+   lua_defs.lua52c,
+   lua_defs.lua53c,
+   lua_defs.lua54c,
+   lua_defs.lua55c,
+   lua_defs.luajit
+)
 
 for name, def in pairs(lua_defs) do
    builtin_standards[name] = def_to_std(def)
@@ -280,6 +299,8 @@ local function get_running_lua_std_name()
       return "lua53c"
    elseif _VERSION == "Lua 5.4" then
       return "lua54c"
+   elseif _VERSION == "Lua 5.5" then
+      return "lua55c"
    else
       return "max"
    end
