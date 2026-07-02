@@ -79,7 +79,7 @@ Links:
 
    parser:group("Options for configuring allowed globals",
       parser:option("--std", "Set standard globals, default is max. <std> can be one of:\n" ..
-         "   max - union of globals of Lua 5.1, Lua 5.2, Lua 5.3 and LuaJIT 2.x;\n" ..
+         "   max - union of globals of Lua 5.1, Lua 5.2, Lua 5.3, Lua 5.4, Lua 5.5 and LuaJIT 2.x;\n" ..
          "   min - intersection of globals of Lua 5.1, Lua 5.2, Lua 5.3 and LuaJIT 2.x;\n" ..
          "   lua51 - globals of Lua 5.1 without deprecated ones;\n" ..
          "   lua51c - globals of Lua 5.1;\n" ..
@@ -89,6 +89,8 @@ Links:
          "   lua53c - globals of Lua 5.3 with LUA_COMPAT_5_2;\n" ..
          "   lua54 - globals of Lua 5.4;\n" ..
          "   lua54c - globals of Lua 5.4 with LUA_COMPAT_5_3;\n" ..
+         "   lua55 - globals of Lua 5.5;\n" ..
+         "   lua55c - globals of Lua 5.5 with LUA_COMPAT_MATHLIB, LUA_COMPAT_LOOPVAR and LUA_COMPAT_GLOBAL;\n" ..
          "   luajit - globals of LuaJIT 2.x;\n" ..
          "   ngx_lua - globals of Openresty lua-nginx-module 0.10.10, including standard LuaJIT 2.x globals;\n" ..
          "   love - globals added by LÖVE;\n" ..
