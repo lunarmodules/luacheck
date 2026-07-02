@@ -338,7 +338,13 @@ end
 
 local function parse_id(state, tag)
    local ast_node = new_outer_node(state, tag or "Id")
-   ast_node[1] = check_name(state)
+
+   if state.token == "global" then
+      ast_node[1] = "global"
+   else
+      ast_node[1] = check_name(state)
+   end
+
    -- Skip name.
    skip_token(state)
    return ast_node
@@ -375,8 +381,8 @@ simple_expressions["{"] = function(state)
       local key_node, value_node
       local first_token_range = copy_range(state)
 
-      if state.token == "name" then
-         local name = state.token_value
+      if state.token == "name" or state.token == "global" then
+         local name = state.token == "global" and "global" or state.token_value
          skip_token(state)  -- Skip name.
 
          if test_and_skip_token(state, "=") then
@@ -526,7 +532,7 @@ local function parse_simple_expression(state, kind, no_literals)
       local inner_expression = parse_expression(state)
       expression = new_inner_node(paren_range, state, "Paren", {inner_expression})
       check_and_skip_closing_token(state, paren_range, "(")
-   elseif state.token == "name" then
+   elseif state.token == "name" or state.token == "global" then
       expression = parse_id(state)
    else
       local literal_handler = simple_expressions[state.token]
@@ -881,6 +887,26 @@ statements["goto"] = function(state)
    -- Skip label name.
    skip_token(state)
    return ast_node
+end
+
+statements["global"] = function(state)
+   local start_range = copy_range(state)
+   -- Skip "global".
+   skip_token(state)
+
+   -- Global definition, potentially with assignment.
+   local lhs = {}
+   local rhs
+
+   repeat
+      lhs[#lhs + 1] = parse_id(state)
+   until not test_and_skip_token(state, ",")
+
+   if test_and_skip_token(state, "=") then
+      rhs = parse_expression_list(state)
+   end
+
+   return new_inner_node(start_range, rhs and rhs[#rhs] or lhs[#lhs], "Global", {lhs, rhs})
 end
 
 local function parse_expression_statement(state)

@@ -79,7 +79,7 @@ local function is_space(b)
 end
 
 local keywords = utils.array_to_set({
-   "and", "break", "do", "else", "elseif", "end", "false", "for", "function", "goto", "if", "in",
+   "and", "break", "do", "else", "elseif", "end", "false", "for", "function", "global", "goto", "if", "in",
    "local", "nil", "not", "or", "repeat", "return", "then", "true", "until", "while"})
 
 local simple_escapes = {

@@ -216,8 +216,8 @@ local function get_final_std(opts_stack, stds)
       local new_fields = {}
 
       if globals then
-         for _, global in ipairs(globals) do
-            table.insert(new_fields, {split_field(global), false})
+         for _, g in ipairs(globals) do
+            table.insert(new_fields, {split_field(g), false})
          end
       end
 

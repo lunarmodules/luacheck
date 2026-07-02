@@ -48,7 +48,7 @@ local action_codes = {
 -- `index.previous_indexing_len` is optional length of prefix of `index` array representing last assignment
 -- in the aliasing chain, e.g. `2` in the previous example (because last indexing is `table.a`).
 local function warn_global(chstate, node, index, is_lhs, is_top_line)
-   local global = index[1]
+   local g = index[1]
    local action = is_lhs and (#index == 1 and "set" or "mutate") or "access"
 
    local indexing
@@ -70,11 +70,11 @@ local function warn_global(chstate, node, index, is_lhs, is_top_line)
    end
 
    chstate:warn_range("11" .. action_codes[action], node, {
-      name = global[1],
+      name = g[1],
       indexing = indexing,
       previous_indexing_len = index.previous_indexing_len,
       top = is_top_line and action == "set" or nil,
-      indirect = node ~= global or nil
+      indirect = node ~= g or nil
    })
 end
 
