@@ -57,7 +57,7 @@ Option                        Type                                     Default v
 ``only``                      Array of patterns                        (Do not filter)
 ============================= ======================================== ===================
 
-An example of a config which makes ``luacheck`` ensure that only globals from the portable intersection of Lua 5.1, Lua 5.2, Lua 5.3 and LuaJIT 2.0 are used, as well as disables detection of unused arguments:
+An example of a config which makes ``luacheck`` ensure that only globals from the portable intersection of Lua 5.1, Lua 5.2, Lua 5.3, Lua 5.4, Lua 5.5 and LuaJIT 2.0 are used, as well as disables detection of unused arguments:
 
 .. code-block:: lua
    :linenos:

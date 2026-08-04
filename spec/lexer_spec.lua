@@ -59,6 +59,7 @@ describe("lexer", function()
 
    it("parses keywords correctly", function()
       assert.same({token = "do"}, get_token("do"))
+      assert.same({token = "global"}, get_token("global"))
       assert.same({token = "goto"}, get_token("goto fail;"))
    end)
 
