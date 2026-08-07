@@ -1,3 +1,4 @@
+local json  = require "dkjson"
 local stages = require "luacheck.stages"
 local utils = require "luacheck.utils"
 
@@ -315,6 +316,79 @@ function format.builtin_formatters.plain(report, file_names, opts)
    end
 
    return table.concat(buf, "\n")
+end
+
+-- https://docs.github.com/en/code-security/code-scanning/integrating-with-code-scanning/sarif-support-for-code-scanning
+function format.builtin_formatters.Sarif(report, file_names, opts)
+   opts.color = false
+   local get_level = function(event)
+       return event.code:sub(1, 1) == "0" and "error" or "warning"
+   end
+
+   -- SARIF support for GitHub code scanning
+   local sarif_output = {
+       ["$schema"] = "https://json.schemastore.org/sarif-2.1.0.json",
+       version = "2.1.0",
+       runs = {
+           {
+               tool = {
+                   driver = {
+                       informationUri = "https://github.com/lunarmodules/luacheck",
+                       name = "luacheck",
+                       version = "1.0.0"
+                   }
+               },
+               results = {}
+           }
+       }
+   }
+
+   for file_i, file_report in ipairs(report) do
+      if file_report.fatal then
+         table.insert(sarif_output.runs[1].results, {
+            level = "error",
+            ruleId = fatal_type(file_report),
+            message = {
+                text = ("luacheck : fatal error %s: couldn't check %s: %s"):format(
+                   fatal_error_codes[file_report.fatal], file_names[file_i], file_report.msg)
+            },
+            locations = {
+                {
+                    physicalLocation = {
+                        artifactLocation = {
+                            uri = file_names[file_i]
+                        }
+                    }
+                }
+            }
+         })
+      else
+         for _, event in ipairs(file_report) do
+            table.insert(sarif_output.runs[1].results, {
+                level = get_level(event),
+                ruleId = event_code(event),
+                message = {
+                    text = format_event(file_names[file_i], event, opts)
+                },
+                locations = {
+                    {
+                        physicalLocation = {
+                            artifactLocation = {
+                                uri = file_names[file_i]
+                            },
+                            region = {
+                                startLine = event.line,
+                                startColumn = event.column
+                            }
+                        }
+                    }
+                }
+            })
+        end
+      end
+   end
+
+   return json.encode(sarif_output)
 end
 
 --- Formats a report.
