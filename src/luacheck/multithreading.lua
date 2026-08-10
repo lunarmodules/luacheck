@@ -12,6 +12,21 @@ if not lanes_ok then
    return multithreading
 end
 
+local lanes_major = tonumber(lanes.ABOUT.version:match("^(%d+)"))
+-- Manage both new and old lane:join() API formats.
+-- See https://github.com/LuaLanes/lanes/commit/bfdc7a92c4e3e99522abb6d90ef2cbb021f36fc8
+local worker_join_compat
+if  lanes_major >= 4 then
+   -- New API: {true, _, ok, worker_results}
+   worker_join_compat = function(worker) return worker:join() end
+else
+   -- Old API: {true, ok, worker_results}
+   worker_join_compat = function(worker)
+      local err, ok, worker_results = worker:join()
+      return true, err, ok, worker_results
+   end
+end
+
 local cpu_number_detection_commands = {}
 
 if utils.is_windows then
@@ -90,7 +105,7 @@ function multithreading.pmap(func, array, jobs)
    local results = {}
 
    for _, worker in ipairs(workers) do
-      local _, ok, worker_results = assert(worker:join())
+      local _, _, ok, worker_results = worker_join_compat(worker)
 
       if ok then
          utils.update(results, worker_results)
