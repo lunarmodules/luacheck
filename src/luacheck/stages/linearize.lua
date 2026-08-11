@@ -20,7 +20,8 @@ stage.warnings = {
    ["431"] = redefined_warning("shadowing upvalue {name!} on line {prev_line}"),
    ["432"] = redefined_warning("shadowing upvalue argument {name!} on line {prev_line}"),
    ["433"] = redefined_warning("shadowing upvalue loop variable {name!} on line {prev_line}"),
-   ["521"] = {message_format = "unused label {label!}", fields = {"label"}}
+   ["521"] = {message_format = "unused label {label!}", fields = {"label"}},
+   ["641"] = {message_format = "line contains multiple statements", fields = {}}
 }
 
 local type_codes = {
@@ -352,7 +353,13 @@ function LinState:emit_stmt(stmt)
 end
 
 function LinState:emit_stmts(stmts)
+   local lines_with_statements = {}
    for _, stmt in ipairs(stmts) do
+      if not lines_with_statements[stmt.line] then
+         lines_with_statements[stmt.line] = true
+      else
+         self.chstate:warn_range("641", stmt)
+      end
       self:emit_stmt(stmt)
    end
 end

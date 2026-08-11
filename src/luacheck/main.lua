@@ -260,7 +260,10 @@ Links:
    parser:flag("--profile", "Show performance statistics."):hidden(true)
 
    parser:flag("-v --version", "Show version info and exit.")
-      :action(function() print(version.string) os.exit(exit_codes.ok) end)
+      :action(function()
+         print(version.string)
+         os.exit(exit_codes.ok)
+      end)
 
    return parser
 end
