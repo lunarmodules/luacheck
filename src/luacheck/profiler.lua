@@ -34,7 +34,8 @@ local functions = {
    {name = "run", module = "stages.detect_unused_fields"},
    {name = "run", module = "stages.detect_unused_locals"},
    {name = "filter", module = "filter"},
-   {name = "normalize", module = "options"}
+   {name = "normalize", module = "options"},
+   {name = "run", module = "stages.check_table_fields"},
 }
 
 local stats = {}

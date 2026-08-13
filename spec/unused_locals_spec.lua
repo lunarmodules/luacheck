@@ -310,7 +310,7 @@ return a
    end)
 end)
 
-describe("unused recurisve function detection", function()
+describe("unused recursive function detection", function()
    it("detects unused recursive functions", function()
       assert_warnings({
          {code = "211", name = "f", func = true, recursive = true, line = 1, column = 16, end_column = 16}
